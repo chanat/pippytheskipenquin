@@ -1,0 +1,86 @@
+{
+  "version": 1,
+  "notes": "Source of truth for level design. Import into Unity as LevelDefinition ScriptableObjects. unlockStars / parSeconds / lengthM are balance defaults, tune after playtests.",
+  "starRules": {
+    "star1": "finish",
+    "star2": "allGradedChallengesCorrect",
+    "star3": "underParTime",
+    "star3Boss": "beatRival"
+  },
+  "questionTiers": {
+    "1": "add/subtract within 20, picture odd-one-out, 2 options",
+    "2": "add/subtract within 100, compare numbers, simple patterns (2,4,6,?)",
+    "3": "times tables 2-5, shadow/shape match, doubling patterns (3,6,12,?)",
+    "4": "times tables 2-9, exact division, tiny word math (3 boxes x 4), two-condition pick (round AND blue)",
+    "5": "two-step (3x4+2), simple fraction compare (1/2 vs 1/3), mixed patterns, fast 2-option"
+  },
+  "challengeTypes": {
+    "answer_gates": "Question on HUD + sign over a row of 2-3 gates. Steer through the correct gate.",
+    "fork_route": "Path splits: risky shortcut (more snowflakes, more obstacles) vs safe long way. Not graded.",
+    "rival_race": "Race an NPC rival who also takes the challenges. Boss level at the end of each world.",
+    "memory_flags": "3-5 flags shown in order (each colour = a note + a shape). Pass flag gates in the same order.",
+    "follow_tracks": "Forest forks. Follow the lost baby penguin's footprints. Wrong branch loops back (time loss).",
+    "trick_combo": "On a ramp, 2-3 arrows appear. Swipe them in order before landing. Optional bonus.",
+    "color_keys": "A coloured ice door blocks the way. Grab the matching key from one of 3 lanes first.",
+    "cracked_ice": "Frozen lake grid with a rule hint (e.g. step on stars only). Wrong tile cracks and slows you.",
+    "delivery": "Pick up a parcel with a number/colour, steer into the matching house's mailbox.",
+    "map_flash": "Night: fireworks light the course for 2 s. Remember which lane is safe.",
+    "avalanche_chase": "Avalanche behind you, forced high speed, shorter 2-option questions."
+  },
+  "modifiers": {
+    "ice": "slippery steering with momentum",
+    "dim": "low light, shapes read by silhouette",
+    "night": "visibility radius around the skier",
+    "wind": "side gusts push the skier"
+  },
+  "rivals": {
+    "benny": { "nameTh": "เบนนี่", "nameEn": "Benny the Beaver" },
+    "ollie": { "nameTh": "โอลลี่", "nameEn": "Ollie the Owl" },
+    "pearl": { "nameTh": "เพิร์ล", "nameEn": "Pearl the Seal" },
+    "walrus": { "nameTh": "กัปตันวอลรัส", "nameEn": "Captain Walrus" },
+    "yeti": { "nameTh": "บิ๊กเยติ", "nameEn": "Big Yeti" }
+  },
+  "worlds": [
+    { "id": 1, "key": "meadow", "nameTh": "ทุ่งมาร์ชเมลโล่", "nameEn": "Marshmallow Meadow", "unlockStars": 0, "time": "day", "palette": { "sky": "#BDF2E9", "snow": "#F7FBFF", "accent": "#FF9EC4" }, "music": "snow_day", "rival": "benny" },
+    { "id": 2, "key": "pines", "nameTh": "ป่าสนกระซิบ", "nameEn": "Whispering Pines", "unlockStars": 10, "time": "afternoon", "palette": { "sky": "#FFE3B8", "snow": "#F4F8F2", "accent": "#3BAA8C" }, "music": "pine_trail", "rival": "ollie" },
+    { "id": 3, "key": "lake", "nameTh": "ทะเลสาบคริสตัล", "nameEn": "Crystal Lake", "unlockStars": 24, "time": "day", "palette": { "sky": "#CFE4FF", "snow": "#EEF6FF", "accent": "#9B8CFF" }, "music": "crystal_glide", "rival": "pearl" },
+    { "id": 4, "key": "village", "nameTh": "หมู่บ้านโคมไฟ", "nameEn": "Lantern Village", "unlockStars": 38, "time": "night", "palette": { "sky": "#26305C", "snow": "#DCE4F5", "accent": "#FFB65C" }, "music": "lantern_lullaby", "rival": "walrus" },
+    { "id": 5, "key": "aurora", "nameTh": "ยอดเขาออโรร่า", "nameEn": "Aurora Peak", "unlockStars": 52, "time": "aurora", "palette": { "sky": "#1E3A5F", "snow": "#E6F0FF", "accent": "#6CF2C2" }, "music": "aurora_rush", "bossMusic": "yeti_showdown", "rival": "yeti" }
+  ],
+  "levels": [
+    { "id": 1, "world": 1, "nameTh": "แรกไถล", "nameEn": "First Slide", "teaches": "ลากเพื่อเลี้ยว + เก็บเกล็ดหิมะ", "modifiers": [], "challenges": [{ "type": "answer_gates", "count": 1, "options": 2, "tier": 1, "kind": "picture" }], "parSeconds": 40, "lengthM": 500 },
+    { "id": 2, "world": 1, "nameTh": "กระโดดดึ๋ง", "nameEn": "Hop Hop", "teaches": "แตะเพื่อกระโดดข้ามขอนไม้", "modifiers": [], "challenges": [{ "type": "answer_gates", "count": 2, "options": 2, "tier": 1, "kind": "math" }], "parSeconds": 45, "lengthM": 550 },
+    { "id": 3, "world": 1, "nameTh": "ประตูตัวเลข", "nameEn": "Number Gates", "teaches": "ตอบโจทย์ด้วยการเลี้ยวผ่านประตู", "modifiers": [], "challenges": [{ "type": "answer_gates", "count": 4, "options": 2, "tier": 1, "kind": "math" }], "parSeconds": 50, "lengthM": 600 },
+    { "id": 4, "world": 1, "nameTh": "สองทางเลือก", "nameEn": "Two Paths", "teaches": "ทางแยก: ทางลัดเสี่ยง vs ทางปลอดภัย", "modifiers": [], "challenges": [{ "type": "fork_route", "count": 2 }, { "type": "answer_gates", "count": 2, "options": 2, "tier": 1, "kind": "math" }], "parSeconds": 55, "lengthM": 650 },
+    { "id": 5, "world": 1, "nameTh": "ตัวไหนไม่เข้าพวก", "nameEn": "Odd One Out", "teaches": "ประตู 3 ทาง + โจทย์ภาพ", "modifiers": [], "challenges": [{ "type": "answer_gates", "count": 4, "options": 3, "tier": 1, "kind": "odd_one_out" }], "parSeconds": 55, "lengthM": 650 },
+    { "id": 6, "world": 1, "nameTh": "แข่งกับเบนนี่", "nameEn": "Race vs Benny", "teaches": "ด่านบอส: แข่งกับคู่ปรับ", "boss": true, "rival": "benny", "modifiers": [], "challenges": [{ "type": "rival_race", "count": 1 }, { "type": "answer_gates", "count": 4, "options": 3, "tier": 1, "kind": "mixed" }, { "type": "fork_route", "count": 1 }], "parSeconds": 60, "lengthM": 750 },
+
+    { "id": 7, "world": 2, "nameTh": "ทางป่าคดเคี้ยว", "nameEn": "Winding Woods", "teaches": "ทางแคบ โค้งหักศอก", "modifiers": [], "challenges": [{ "type": "answer_gates", "count": 4, "options": 3, "tier": 2, "kind": "math" }], "parSeconds": 60, "lengthM": 700 },
+    { "id": 8, "world": 2, "nameTh": "ธงจำสี", "nameEn": "Color Flags", "teaches": "จำลำดับธง 3 ผืน", "modifiers": [], "challenges": [{ "type": "memory_flags", "count": 2, "flags": 3 }, { "type": "answer_gates", "count": 2, "options": 3, "tier": 2, "kind": "math" }], "parSeconds": 60, "lengthM": 700 },
+    { "id": 9, "world": 2, "nameTh": "ตามรอยเพนกวินน้อย", "nameEn": "Little Tracks", "teaches": "ตามรอยเท้าในทางแยก", "modifiers": [], "challenges": [{ "type": "follow_tracks", "count": 3 }], "parSeconds": 65, "lengthM": 750 },
+    { "id": 10, "world": 2, "nameTh": "ท่าลอยฟ้า", "nameEn": "Air Tricks", "teaches": "ปัดลูกศรกลางอากาศ", "modifiers": [], "challenges": [{ "type": "trick_combo", "count": 3, "arrows": 2 }, { "type": "answer_gates", "count": 3, "options": 3, "tier": 2, "kind": "compare" }], "parSeconds": 65, "lengthM": 750 },
+    { "id": 11, "world": 2, "nameTh": "เพลงห้าธง", "nameEn": "Five-Flag Tune", "teaches": "ธง 4-5 ผืน มีโน้ตดนตรีช่วยจำ", "modifiers": [], "challenges": [{ "type": "memory_flags", "count": 2, "flags": 5 }, { "type": "fork_route", "count": 1 }], "parSeconds": 70, "lengthM": 800 },
+    { "id": 12, "world": 2, "nameTh": "ปริศนาของโอลลี่", "nameEn": "Ollie's Riddle Race", "teaches": "ด่านบอส: โจทย์อนุกรม", "boss": true, "rival": "ollie", "modifiers": [], "challenges": [{ "type": "rival_race", "count": 1 }, { "type": "answer_gates", "count": 5, "options": 3, "tier": 2, "kind": "pattern" }, { "type": "memory_flags", "count": 1, "flags": 4 }], "parSeconds": 75, "lengthM": 850 },
+
+    { "id": 13, "world": 3, "nameTh": "ลื่นปรื๊ด", "nameEn": "Slippy Lake", "teaches": "พื้นน้ำแข็ง: เลี้ยวแล้วไถลต่อ", "modifiers": ["ice"], "challenges": [{ "type": "answer_gates", "count": 4, "options": 3, "tier": 3, "kind": "math" }], "parSeconds": 65, "lengthM": 750 },
+    { "id": 14, "world": 3, "nameTh": "กุญแจสีรุ้ง", "nameEn": "Rainbow Keys", "teaches": "เก็บกุญแจสีให้ตรงประตู", "modifiers": [], "challenges": [{ "type": "color_keys", "count": 3 }, { "type": "answer_gates", "count": 2, "options": 3, "tier": 3, "kind": "math" }], "parSeconds": 70, "lengthM": 800 },
+    { "id": 15, "world": 3, "nameTh": "น้ำแข็งร้าว", "nameEn": "Crack Path", "teaches": "อ่านคำใบ้ เลือกแผ่นน้ำแข็งที่ปลอดภัย", "modifiers": ["ice"], "challenges": [{ "type": "cracked_ice", "count": 3 }, { "type": "answer_gates", "count": 2, "options": 3, "tier": 3, "kind": "pattern" }], "parSeconds": 70, "lengthM": 800 },
+    { "id": 16, "world": 3, "nameTh": "ถ้ำคริสตัล", "nameEn": "Crystal Cave", "teaches": "จับคู่เงา/รูปทรงในที่มืด", "modifiers": ["dim"], "challenges": [{ "type": "answer_gates", "count": 5, "options": 3, "tier": 3, "kind": "shadow_match" }], "parSeconds": 75, "lengthM": 850 },
+    { "id": 17, "world": 3, "nameTh": "กุญแจจำสี", "nameEn": "Key Memory", "teaches": "จำสีธง แล้วเก็บกุญแจสีนั้น", "modifiers": [], "challenges": [{ "type": "memory_flags", "count": 1, "flags": 3 }, { "type": "color_keys", "count": 3 }], "parSeconds": 75, "lengthM": 850 },
+    { "id": 18, "world": 3, "nameTh": "ไล่ตามเพิร์ล", "nameEn": "Chase Pearl", "teaches": "ด่านบอส: แข่งบนน้ำแข็ง", "boss": true, "rival": "pearl", "modifiers": ["ice"], "challenges": [{ "type": "rival_race", "count": 1 }, { "type": "cracked_ice", "count": 2 }, { "type": "color_keys", "count": 2 }, { "type": "answer_gates", "count": 4, "options": 3, "tier": 3, "kind": "mixed" }], "parSeconds": 80, "lengthM": 950 },
+
+    { "id": 19, "world": 4, "nameTh": "ไปรษณีย์หิมะ", "nameEn": "Snow Post", "teaches": "ส่งพัสดุให้บ้านเลขที่ถูกต้อง", "modifiers": [], "challenges": [{ "type": "delivery", "count": 3 }], "parSeconds": 70, "lengthM": 800 },
+    { "id": 20, "world": 4, "nameTh": "ตะเกียงนำทาง", "nameEn": "Lantern Run", "teaches": "กลางคืน มองเห็นแค่รอบตัว", "modifiers": ["night"], "challenges": [{ "type": "answer_gates", "count": 4, "options": 3, "tier": 4, "kind": "math" }], "parSeconds": 75, "lengthM": 850 },
+    { "id": 21, "world": 4, "nameTh": "ตลาดกลางคืน", "nameEn": "Night Market", "teaches": "ส่งของ + โจทย์คูณสั้นๆ", "modifiers": ["night"], "challenges": [{ "type": "delivery", "count": 2 }, { "type": "answer_gates", "count": 4, "options": 3, "tier": 4, "kind": "word_math" }], "parSeconds": 80, "lengthM": 900 },
+    { "id": 22, "world": 4, "nameTh": "ดอกไม้ไฟจำทาง", "nameEn": "Firework Map", "teaches": "ดอกไม้ไฟสว่าง 2 วิ จำเลนที่ปลอดภัย", "modifiers": ["night"], "challenges": [{ "type": "map_flash", "count": 3 }, { "type": "fork_route", "count": 1 }], "parSeconds": 80, "lengthM": 900 },
+    { "id": 23, "world": 4, "nameTh": "ทางกลับบ้าน", "nameEn": "Way Home", "teaches": "ตามรอยในความมืด", "modifiers": ["night"], "challenges": [{ "type": "follow_tracks", "count": 3 }, { "type": "memory_flags", "count": 1, "flags": 4 }], "parSeconds": 85, "lengthM": 950 },
+    { "id": 24, "world": 4, "nameTh": "ด่วนพิเศษวอลรัส", "nameEn": "Walrus Express", "teaches": "ด่านบอส: แข่งส่งของ", "boss": true, "rival": "walrus", "modifiers": ["night"], "challenges": [{ "type": "rival_race", "count": 1 }, { "type": "delivery", "count": 2 }, { "type": "answer_gates", "count": 5, "options": 3, "tier": 4, "kind": "mixed" }], "parSeconds": 90, "lengthM": 1000 },
+
+    { "id": 25, "world": 5, "nameTh": "สันเขาลมแรง", "nameEn": "Windy Ridge", "teaches": "ลมผลักด้านข้าง", "modifiers": ["wind"], "challenges": [{ "type": "answer_gates", "count": 5, "options": 3, "tier": 5, "kind": "math" }], "parSeconds": 80, "lengthM": 900 },
+    { "id": 26, "world": 5, "nameTh": "หิมะถล่ม!", "nameEn": "Avalanche!", "teaches": "หนีหิมะถล่ม ตอบเร็ว 2 ตัวเลือก", "modifiers": [], "challenges": [{ "type": "avalanche_chase", "count": 1 }, { "type": "answer_gates", "count": 5, "options": 2, "tier": 5, "kind": "fast" }], "parSeconds": 75, "lengthM": 950 },
+    { "id": 27, "world": 5, "nameTh": "สะพานน้ำแข็ง", "nameEn": "Ice Bridges", "teaches": "กระโดดข้ามเหว + น้ำแข็งร้าว", "modifiers": ["ice"], "challenges": [{ "type": "cracked_ice", "count": 2 }, { "type": "trick_combo", "count": 2, "arrows": 3 }, { "type": "answer_gates", "count": 4, "options": 3, "tier": 5, "kind": "mixed" }], "parSeconds": 85, "lengthM": 1000 },
+    { "id": 28, "world": 5, "nameTh": "เสียงสะท้อนออโรร่า", "nameEn": "Aurora Echo", "teaches": "จำจากเสียงโน้ตอย่างเดียว (มีตัวเลือกแสดงสีช่วย)", "modifiers": [], "challenges": [{ "type": "memory_flags", "count": 3, "flags": 5, "audioOnly": true }, { "type": "answer_gates", "count": 2, "options": 3, "tier": 5, "kind": "pattern" }], "parSeconds": 85, "lengthM": 1000 },
+    { "id": 29, "world": 5, "nameTh": "แกรนด์เมดเลย์", "nameEn": "Grand Medley", "teaches": "ทุกอย่างรวมกัน", "modifiers": ["wind"], "challenges": [{ "type": "color_keys", "count": 2 }, { "type": "follow_tracks", "count": 1 }, { "type": "trick_combo", "count": 2, "arrows": 3 }, { "type": "answer_gates", "count": 6, "options": 3, "tier": 5, "kind": "mixed" }], "parSeconds": 95, "lengthM": 1150 },
+    { "id": 30, "world": 5, "nameTh": "ศึกเยติยักษ์", "nameEn": "Big Yeti Showdown", "teaches": "บอสสุดท้าย", "boss": true, "rival": "yeti", "modifiers": [], "challenges": [{ "type": "rival_race", "count": 1 }, { "type": "avalanche_chase", "count": 1 }, { "type": "memory_flags", "count": 1, "flags": 5 }, { "type": "answer_gates", "count": 6, "options": 3, "tier": 5, "kind": "mixed" }], "parSeconds": 110, "lengthM": 1300 }
+  ]
+}

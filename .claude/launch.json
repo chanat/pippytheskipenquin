@@ -1,0 +1,34 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "pocketski-prototype",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "/private/tmp/claude-501/-Users-chanat--claude-spares-spare-GUI7J5/83839f34-d1e5-45af-a977-5041d0334943/scratchpad/tools/serve.js",
+        "/Users/chanat/Downloads/app-projects/pippytheskipenquin/prototype/web",
+        "8765"
+      ],
+      "port": 8765
+    },
+    {
+      "name": "render-audio",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "/Users/chanat/Downloads/app-projects/pippytheskipenquin/tools/render-audio/server.js",
+        "8766"
+      ],
+      "port": 8766
+    },
+    {
+      "name": "higgsfield-review",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "/private/tmp/claude-501/-Users-chanat--claude-spares-spare-GUI7J5/83839f34-d1e5-45af-a977-5041d0334943/scratchpad/tools/serve.js",
+        "/Users/chanat/Downloads/app-projects/pippytheskipenquin/design/higgsfield",
+        "8767"
+      ],
+      "port": 8767
+    }
+  ]
+}

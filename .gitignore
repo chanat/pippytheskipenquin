@@ -1,0 +1,63 @@
+# Pippy The Ski Penguin — keep sources, art and docs; leave out what Unity / Xcode regenerate.
+
+# Unity (project in unity/)
+/unity/[Ll]ibrary/
+/unity/[Tt]emp/
+/unity/[Oo]bj/
+/unity/[Bb]uild/
+/unity/[Bb]uilds/
+/unity/[Ll]ogs/
+/unity/[Uu]ser[Ss]ettings/
+/unity/[Mm]emoryCaptures/
+/unity/[Rr]ecordings/
+/unity/Assets/Plugins/Editor/JetBrains*
+/unity/.vs/
+/unity/.vscode/
+/unity/.idea/
+/unity/.gradle/
+*.csproj
+*.unityproj
+*.sln
+*.slnx
+mono_crash*.json
+*.suo
+*.tmp
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
+*.pidb.meta
+*.pdb.meta
+*.mdb.meta
+sysinfo.txt
+crashlytics-build.properties
+/unity/Assets/[Ss]treamingAssets/aa/*
+
+# Builds and Xcode products anywhere
+*.apk
+*.aab
+*.ipa
+*.app/
+DerivedData/
+xcuserdata/
+
+# Secrets / signing — never commit
+.env
+.env.*
+*.env
+secret.env
+*.pem
+*.p12
+*.key
+*.mobileprovision
+*credentials*
+
+# Tools / OS
+node_modules/
+.DS_Store
+.claude/settings.local.json

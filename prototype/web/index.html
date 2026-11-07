@@ -1,0 +1,443 @@
+<title>Pippy The Ski Penguin</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Kanit:wght@600;700;800&family=Mitr:wght@400;500;600&display=swap">
+<style>
+  /* Layout: one phone-shaped game frame, centered on desktop, full-bleed on phones; toy UI with thick ink outlines. */
+  :root {
+    --ink: #2B2140;
+    --ink-soft: #4A3F6B;
+    --room: #1E1A33;
+    --snow: #FBFDFF;
+    --ice: #E4F6FF;
+    --berry: #FF5C93;
+    --berry-deep: #E23C78;
+    --sky: #3FA9F5;
+    --mint: #7DE0A8;
+    --sun: #FFC93C;
+    --wood: #C98A5A;
+    --font-display: 'Fredoka', 'Mitr', system-ui, sans-serif;
+    --font-body: 'Mitr', system-ui, sans-serif;
+    --font-game: 'Fredoka', 'Kanit', system-ui, sans-serif;
+    --ice-hi: #F2FCFF;
+    --ice-mid: #A4E4FF;
+    --ice-deep: #2A8FDA;
+    --rb-band: url(#gRibbon);
+    --rb-tail: #2A8FDA;
+    --rb-fold: #175C9E;
+    color-scheme: light;
+  }
+  html, body { height: 100%; }
+  body { margin: 0; background: var(--room); color: var(--ink); font-family: var(--font-body); overflow: hidden; -webkit-tap-highlight-color: transparent; }
+  #app { height: 100%; display: flex; align-items: center; justify-content: center; }
+  #frame { position: relative; width: min(100%, 430px); height: 100%; max-height: 932px; overflow: hidden; background: var(--snow); touch-action: none; user-select: none; -webkit-user-select: none; }
+  @media (min-width: 520px) { #frame { height: calc(100% - 32px); border-radius: 30px; box-shadow: 0 0 0 4px #0E0B1C, 0 18px 0 #0E0B1C; } }
+  canvas { position: absolute; inset: 0; display: block; }
+  #game3d { pointer-events: none; }
+  button { font-family: var(--font-body); cursor: pointer; }
+  button:focus-visible { outline: 3px solid var(--sun); outline-offset: 3px; }
+  [hidden] { display: none !important; }
+  /* A held finger is steering, not selecting text: no iOS loupe or callout anywhere in the game. */
+  #frame, #frame * { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+
+  .toy { border: 3px solid var(--ink); box-shadow: 0 4px 0 var(--ink); border-radius: 22px; background: linear-gradient(180deg, #FFFFFF, #DDF4FF); color: var(--ink); }
+  .outline { text-shadow: 2px 0 0 var(--ink), -2px 0 0 var(--ink), 0 2px 0 var(--ink), 0 -2px 0 var(--ink), 0 4px 0 var(--ink); color: #FFFFFF; }
+  /* Ice buttons: glossy cold-blue body, frost glare on top, a shine that sweeps across now and then. */
+  .big-btn { position: relative; width: 100%; height: 64px; border: 4px solid var(--ink); border-radius: 32px; background: linear-gradient(180deg, #E6FAFF 0%, var(--ice-mid) 22%, #52BDF2 62%, var(--ice-deep) 100%); box-shadow: 0 6px 0 var(--ink), inset 0 -6px 0 rgba(16, 78, 150, 0.32); font: 700 27px var(--font-game); overflow: hidden; display: flex; align-items: center; justify-content: center; gap: 10px; }
+  .big-btn::before { content: ""; position: absolute; left: 18px; right: 18px; top: 5px; height: 12px; border-radius: 10px; background: rgba(255, 255, 255, 0.6); }
+  .big-btn::after { content: ""; position: absolute; top: -12px; bottom: -12px; left: -70px; width: 34px; background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), transparent); transform: skewX(-20deg); animation: shimmer 3.4s ease-in-out infinite; }
+  @keyframes shimmer { 0%, 64% { left: -70px; } 100% { left: calc(100% + 70px); } }
+  .big-btn.blue { background: linear-gradient(180deg, #DDEBFF 0%, #93C2FF 22%, #4F8DEB 62%, #2F5FC6 100%); height: 56px; font-size: 22px; }
+  .big-btn.blue::after { display: none; }
+  .big-btn:active, .chip-btn:active, .ice-btn:active { transform: translateY(3px); box-shadow: 0 2px 0 var(--ink); }
+  .ice-btn { flex: none; min-width: 60px; height: 60px; padding: 0 10px; white-space: nowrap; box-sizing: border-box; border: 4px solid var(--ink); border-radius: 20px; background: linear-gradient(180deg, #FFFFFF 0%, #DDF5FF 45%, #A9E0F8 100%); box-shadow: 0 5px 0 var(--ink), inset 0 -5px 0 rgba(42, 143, 218, 0.25); display: flex; align-items: center; justify-content: center; gap: 8px; font: 700 19px var(--font-game); color: var(--ink); }
+  .ice-btn .lbl { display: none; }
+  .ice-btn.wide { flex: 1; }
+  .ice-btn.wide .lbl, .big-btn .lbl { display: inline; }
+  .ico-fill { fill: var(--ice-deep); }
+  .big-btn .ico-fill { fill: #FFFFFF; }
+  .ico-stroke { stroke: var(--ice-deep); }
+  .big-btn .ico-stroke { stroke: #FFFFFF; }
+
+  /* HUD */
+  #hud { position: absolute; inset: 0; pointer-events: none; }
+  .topbar { position: absolute; left: 0; right: 0; top: 12px; padding-inline: max(14px, env(safe-area-inset-left, 0px)) max(14px, env(safe-area-inset-right, 0px)); display: flex; align-items: center; gap: 8px; }
+  .round { width: 44px; height: 44px; border-radius: 22px; display: flex; align-items: center; justify-content: center; padding: 0; pointer-events: auto; }
+  #hearts { display: flex; }
+  .heart { width: 30px; height: 30px; }
+  .heart path { fill: #FF4F6D; stroke: var(--ink); stroke-width: 2; stroke-linejoin: round; }
+  .heart.empty path { fill: #D9D3EA; }
+  .spacer { flex: 1; }
+  .plank { height: 40px; padding: 0 12px; border-radius: 12px; border: 3px solid var(--ink); box-shadow: 0 4px 0 var(--ink); box-sizing: border-box; background: repeating-linear-gradient(90deg, var(--wood) 0 18px, #BC7D4E 18px 21px); display: flex; align-items: center; font: 700 19px var(--font-display); font-variant-numeric: tabular-nums; }
+  .coinchip { height: 40px; padding: 0 12px 0 4px; border-radius: 20px; box-sizing: border-box; background: var(--ice); display: flex; align-items: center; gap: 4px; font: 700 19px var(--font-display); font-variant-numeric: tabular-nums; }
+  #prog { position: absolute; left: 22px; right: 40px; top: 70px; height: 16px; border-radius: 8px; border: 3px solid var(--ink); box-sizing: border-box; background: #FFFFFF; }
+  #progFill { height: 10px; width: 0; border-radius: 5px; background: repeating-linear-gradient(135deg, var(--sky) 0 8px, #2F8FD8 8px 14px); }
+  .pmark { position: absolute; top: -9px; width: 26px; height: 26px; margin-left: -13px; border-radius: 13px; border: 3px solid var(--ink); box-sizing: border-box; }
+  #progMe { background: #2B3A67; }
+  #progRival { background: #8B5A3C; top: -5px; width: 18px; height: 18px; margin-left: -9px; }
+  .flag { position: absolute; right: -28px; top: -18px; }
+  #qcard { position: absolute; left: 18px; right: 18px; top: 96px; padding: 9px 14px; border-radius: 24px; border: 4px solid var(--ink); background: linear-gradient(180deg, #F4FBFF, #CDEBFF); box-shadow: 0 6px 0 var(--ink); display: flex; align-items: center; gap: 14px; }
+  #qcard.pop { animation: pop 0.35s cubic-bezier(.2, 1.4, .5, 1); }
+  @keyframes pop { from { transform: scale(0.6); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+  #qtext { font: 700 34px/1 var(--font-display); font-variant-numeric: tabular-nums; }
+  #qcard .qt { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  #qhint { font-size: 13px; font-weight: 600; color: var(--ink-soft); }
+  #pups { position: absolute; left: 50%; transform: translateX(-50%); top: 92px; padding: 4px 12px; border-radius: 999px; background: rgba(43, 33, 64, 0.8); color: #FFFFFF; font-size: 13px; font-weight: 500; white-space: nowrap; }
+  #toast { position: absolute; left: 0; right: 0; top: 22%; text-align: center; font: 800 30px var(--font-game); opacity: 0; text-shadow: 3px 0 0 var(--ink), -3px 0 0 var(--ink), 0 3px 0 var(--ink), 0 -3px 0 var(--ink), 2px 2px 0 var(--ink), -2px -2px 0 var(--ink), 0 6px 0 var(--ink); }
+  #toast.show { animation: toast 1.15s ease-out forwards; }
+  @keyframes toast { 0% { transform: translateY(12px) scale(0.6); opacity: 0; } 15% { transform: translateY(0) scale(1.15); opacity: 1; } 30% { transform: scale(1); } 75% { opacity: 1; } 100% { transform: translateY(-30px); opacity: 0; } }
+  /* Coin streak "+N" above Pippy: pops on every pickup, floats off when the streak ends. */
+  #cpops { position: absolute; inset: 0; overflow: hidden; }
+  .cpop.gtext { position: absolute; font-size: 28px; -webkit-text-stroke-width: 6px; translate: 0 -50%; transform-origin: 0 50%; }
+  .cpop.gtext.left { translate: -100% -50%; transform-origin: 100% 50%; }
+  .cpop.bump { animation: cpop 0.32s cubic-bezier(.2, 1.6, .4, 1); }
+  .cpop.out { animation: cpopOut 0.55s ease-in forwards; }
+  @keyframes cpop { 0% { transform: scale(0.55); } 55% { transform: scale(1.25); } 100% { transform: scale(1); } }
+  @keyframes cpopOut { 0% { transform: none; opacity: 1; } 100% { transform: translateY(-40px) scale(0.85); opacity: 0; } }
+  .coinchip.bump { animation: chipBump 0.22s ease-out; }
+  @keyframes chipBump { 40% { transform: scale(1.14); } }
+  @keyframes cpopFade { to { opacity: 0; } }
+  #pad { position: absolute; width: 132px; height: 132px; margin: -66px 0 0 -66px; border-radius: 50%; border: 3px solid rgba(255, 255, 255, 0.85); background: rgba(43, 33, 64, 0.12); pointer-events: none; }
+  #pad::before, #pad::after { position: absolute; top: 50%; transform: translateY(-50%); font: 700 26px var(--font-display); color: rgba(255, 255, 255, 0.9); text-shadow: 0 2px 0 rgba(43, 33, 64, 0.6); }
+  #pad::before { content: "‹"; left: 12px; }
+  #pad::after { content: "›"; right: 12px; }
+  #padDot { position: absolute; left: 50%; top: 50%; width: 46px; height: 46px; border-radius: 50%; background: rgba(255, 255, 255, 0.9); border: 3px solid var(--ink); transform: translate(-50%, -50%); }
+
+  /* Screens */
+  .screen { position: absolute; inset: 0; display: flex; flex-direction: column; padding-inline: max(16px, env(safe-area-inset-left, 0px)) max(16px, env(safe-area-inset-right, 0px)); padding-block: 16px; box-sizing: border-box; }
+  .scrim { background: rgba(30, 26, 51, 0.55); justify-content: center; align-items: center; }
+  .logo { margin: 8px 0 0; display: flex; flex-direction: column; align-items: center; text-align: center; font: 700 76px/0.95 var(--font-display); letter-spacing: 1px; text-wrap: balance; text-shadow: 4px 0 0 var(--ink), -4px 0 0 var(--ink), 0 4px 0 var(--ink), 0 -4px 0 var(--ink), 3px 3px 0 var(--ink), -3px 3px 0 var(--ink), 3px -3px 0 var(--ink), -3px -3px 0 var(--ink), 0 9px 0 var(--ink); }
+  .logo .bl { display: inline-block; animation: bounce 1.8s ease-in-out infinite; }
+  .logo-sub { font-size: 36px; color: #FFFFFF; letter-spacing: 1px; }
+  @keyframes bounce { 0%, 60%, 100% { transform: translateY(0); } 30% { transform: translateY(-9px) rotate(-4deg); } }
+  .ribbon { align-self: center; margin-top: 12px; padding: 5px 20px; border-radius: 12px; background: linear-gradient(180deg, #8FD8FF, var(--ice-deep)); border: 3px solid var(--ink); box-shadow: 0 4px 0 var(--ink); font: 700 17px var(--font-game); }
+  .sheet { margin-top: auto; display: flex; flex-direction: column; gap: 12px; }
+  .row2 { display: flex; gap: 10px; align-items: center; }
+  .row2 .big-btn.blue { flex: 1; }
+  .best { font-size: 12px; font-weight: 500; }
+  .settings { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: center; }
+  .chip-btn { height: 34px; padding: 0 10px; border: 3px solid var(--ink); border-radius: 17px; background: linear-gradient(180deg, #FFFFFF, #DDF4FF); box-shadow: 0 3px 0 var(--ink); font: 700 13px var(--font-game); color: var(--ink); }
+  .chip-btn[aria-pressed="true"] { background: linear-gradient(180deg, #9BE0FF, var(--ice-deep)); color: #FFFFFF; text-shadow: 0 1.5px 0 var(--ink), 1px 0 0 var(--ink), -1px 0 0 var(--ink); }
+  .help { margin: 0; align-self: center; padding: 3px 12px; border-radius: 12px; background: rgba(255, 255, 255, 0.8); text-align: center; font-size: 12px; font-weight: 500; line-height: 1.5; color: var(--ink-soft); }
+  /* Level map: a scrolling snowy mountain with a winding trail and round ice level nodes. */
+  .map-btn { height: 56px; }
+  .map-count { display: inline-flex; align-items: center; gap: 3px; margin-left: 6px; padding: 2px 10px 2px 6px; border-radius: 999px; background: rgba(255, 255, 255, 0.8); border: 2px solid var(--ink); font-size: 15px; }
+  .map-count .mstar { width: 18px; height: 18px; }
+  #screen-map { padding: 0; background: linear-gradient(180deg, #7CCBFF 0%, #BFE8FF 16%, #F2FAFF 30%, #FBFDFF 100%); }
+  #mapScroll { position: absolute; inset: 0; overflow-y: auto; overscroll-behavior: contain; touch-action: pan-y; -webkit-overflow-scrolling: touch; }
+  #mapWorld { position: relative; width: 100%; aspect-ratio: 390 / 1100; }
+  .map-bg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .map-top { position: absolute; left: 0; right: 0; top: 0; padding: 12px max(14px, env(safe-area-inset-right, 0px)) 22px max(14px, env(safe-area-inset-left, 0px)); display: flex; align-items: center; gap: 8px; background: linear-gradient(180deg, rgba(124, 203, 255, 0.95) 55%, rgba(124, 203, 255, 0)); pointer-events: none; }
+  .map-top > * { pointer-events: auto; }
+  .map-title { flex: 1; text-align: center; }
+  .map-title .gtext { font-size: 23px; -webkit-text-stroke-width: 6px; }
+  .map-stars { height: 40px; padding: 0 12px 0 8px; font: 700 18px var(--font-game); }
+  .map-stars .mstar { width: 24px; height: 24px; }
+  .mnode { position: absolute; width: 66px; height: 66px; margin: -33px 0 0 -33px; padding: 0; border-radius: 50%; border: 4px solid var(--ink); box-shadow: 0 5px 0 var(--ink), inset 0 -6px 0 rgba(16, 78, 150, 0.3); background: radial-gradient(circle at 34% 28%, rgba(255, 255, 255, 0.95) 0 10%, transparent 11%), linear-gradient(180deg, #E6FAFF 0%, var(--ice-mid) 30%, #4DB8F0 70%, var(--ice-deep) 100%); display: flex; align-items: center; justify-content: center; }
+  .mnode .gtext { font-size: 30px; -webkit-text-stroke-width: 6px; }
+  .mnode.boss { width: 84px; height: 84px; margin: -42px 0 0 -42px; background: radial-gradient(circle at 34% 28%, rgba(255, 255, 255, 0.95) 0 10%, transparent 11%), linear-gradient(180deg, #FFF3C4 0%, #FFD84A 40%, #FFA61F 100%); }
+  .mnode:disabled { background: linear-gradient(180deg, #EEF3F7, #BFD0DD); cursor: not-allowed; }
+  .mnode:active:not(:disabled) { transform: translateY(3px); box-shadow: 0 2px 0 var(--ink); }
+  .mnode.cur { animation: nodePulse 1.3s ease-in-out infinite; }
+  @keyframes nodePulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.09); } }
+  .mstars { position: absolute; left: 50%; top: calc(100% - 4px); transform: translateX(-50%); display: flex; align-items: flex-start; }
+  .mstars .mstar { width: 20px; height: 20px; }
+  .mstars .mstar:nth-child(2) { margin-top: 4px; }
+  .mstar.off { fill: #D6E2EE; stroke: rgba(43, 33, 64, 0.55); }
+  .mname { position: absolute; top: 50%; transform: translateY(-50%); white-space: nowrap; padding: 1px 10px; border-radius: 999px; border: 2.5px solid var(--ink); background: rgba(255, 255, 255, 0.92); font: 700 13px var(--font-game); color: var(--ink); pointer-events: none; }
+  .mname.r { left: calc(100% + 10px); }
+  .mname.l { right: calc(100% + 10px); }
+  .msign { position: absolute; transform: translate(-50%, -50%); display: flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 14px; border: 3px solid var(--ink); box-shadow: 0 4px 0 var(--ink); background: repeating-linear-gradient(90deg, var(--wood) 0 18px, #BC7D4E 18px 21px); color: #FFFFFF; white-space: nowrap; }
+  .msign span { display: flex; flex-direction: column; line-height: 1.2; text-shadow: 0 1.5px 0 var(--ink), 1px 0 0 var(--ink), -1px 0 0 var(--ink); }
+  .msign b { font: 700 15px var(--font-game); }
+  .msign small { font: 600 11px var(--font-body); }
+  #mapPip { position: absolute; width: 60px; height: 74px; margin: -116px 0 0 -30px; pointer-events: none; }
+
+  /* Ice panels: popups are frosted ice blocks with a snow-capped ribbon title and icicles underneath. */
+  .gpanel { position: relative; align-self: center; width: calc(100% - 24px); max-width: 340px; box-sizing: border-box; margin-top: 48px; padding: 0 16px 20px; border: 4px solid var(--ink); border-radius: 28px;
+    background: linear-gradient(112deg, transparent 0 12%, rgba(255, 255, 255, 0.65) 12% 17%, transparent 17% 22%, rgba(255, 255, 255, 0.45) 22% 24%, transparent 24%), linear-gradient(180deg, var(--ice-hi) 0%, #CDEFFF 50%, #9EDDF8 100%);
+    box-shadow: 0 8px 0 var(--ink), inset 0 0 0 4px rgba(255, 255, 255, 0.85), inset 0 -12px 0 rgba(42, 143, 218, 0.16);
+    display: flex; flex-direction: column; gap: 12px; animation: panelIn 0.5s cubic-bezier(.2, 1.35, .5, 1) both; }
+  .gpanel::after { content: ""; position: absolute; left: 34px; right: 34px; bottom: -28px; height: 22px; pointer-events: none;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='22' viewBox='0 0 120 22'%3E%3Cg fill='%23D6F5FF' stroke='%232B2140' stroke-width='2.2' stroke-linejoin='round'%3E%3Cpath d='M6 1h14l-6 19z'/%3E%3Cpath d='M31 1h10l-4 12z'/%3E%3Cpath d='M53 1h16l-7 20z'/%3E%3Cpath d='M81 1h9l-4 10z'/%3E%3Cpath d='M99 1h14l-6 16z'/%3E%3C/g%3E%3C/svg%3E") repeat-x 0 0 / 120px 22px; }
+  @keyframes panelIn { from { transform: translateY(-60px) scale(0.85); opacity: 0; } to { transform: none; opacity: 1; } }
+  .gpanel.fail { --rb-band: url(#gRibbonFail); --rb-tail: #6F8FB0; --rb-fold: #4A6584; }
+  .gribbon { position: relative; height: 84px; margin: -50px -24px -4px; }
+  .gribbon svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+  .gribbon h2 { position: absolute; inset: 0; margin: 0; display: flex; align-items: center; justify-content: center; padding-top: 12px; }
+  /* Game lettering: the element draws the thick ink outline, ::after lays the gradient fill on top. */
+  .gtext { position: relative; display: inline-block; white-space: nowrap; font: 800 32px/1.3 var(--font-game); letter-spacing: 0.5px; color: var(--ink); -webkit-text-stroke: 7px var(--ink); text-shadow: 0 4px 0 var(--ink); font-variant-numeric: tabular-nums; }
+  .gtext::after { content: attr(data-text); position: absolute; left: 0; top: 0; -webkit-text-stroke: 0; text-shadow: none; background: linear-gradient(180deg, #FFFFFF 0 52%, #D3F1FF 52% 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent; }
+  .gtext.gold::after { background: linear-gradient(180deg, #FFF7C2 0%, #FFD84A 48%, #FFA61F 100%); -webkit-background-clip: text; background-clip: text; }
+  .gbadge { align-self: center; padding: 2px 14px; border-radius: 999px; border: 3px solid var(--ink); background: linear-gradient(180deg, #7FD3FA, var(--ice-deep)); color: #FFFFFF; font: 700 15px var(--font-game); text-shadow: 0 1.5px 0 var(--ink), 1px 0 0 var(--ink), -1px 0 0 var(--ink); }
+  .gpanel p { margin: 0; text-align: center; font-size: 15px; line-height: 1.5; color: var(--ink-soft); text-wrap: balance; }
+  .gwell { margin: 0; padding: 10px 14px; list-style: none; border-radius: 16px; background: rgba(255, 255, 255, 0.7); border: 2px solid rgba(42, 143, 218, 0.35); display: flex; flex-direction: column; gap: 6px; font-size: 14px; font-weight: 500; }
+  .gwell li { display: flex; align-items: center; gap: 8px; }
+  .gstars { flex: none; display: inline-flex; gap: 1px; width: 56px; }
+  .mstar { width: 17px; height: 17px; fill: url(#gGold); stroke: var(--ink); stroke-width: 2; stroke-linejoin: round; }
+  #screen-intro { pointer-events: none; justify-content: flex-end; padding-bottom: 36px; }
+  #btnIntroBack { pointer-events: auto; position: absolute; left: max(14px, env(safe-area-inset-left, 0px)); top: 12px; }
+  .tapgo { margin-top: 30px; text-align: center; font: 700 21px var(--font-game); animation: pulse 1.2s ease-in-out infinite; }
+  @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.06); } }
+  .gbar { display: flex; gap: 10px; align-items: stretch; }
+  .gbar .big-btn { flex: 1; width: auto; height: 60px; padding: 0 10px; font-size: 22px; white-space: nowrap; }
+  #resStars { display: flex; justify-content: center; align-items: flex-end; gap: 2px; margin-top: -4px; }
+  .sw { position: relative; width: 72px; height: 72px; }
+  .sw:nth-child(1) { transform: rotate(-12deg) translateY(6px); }
+  .sw:nth-child(2) { width: 94px; height: 94px; }
+  .sw:nth-child(3) { transform: rotate(12deg) translateY(6px); }
+  .sw svg { width: 100%; height: 100%; overflow: visible; }
+  .sock { fill: rgba(21, 95, 168, 0.22); stroke: rgba(43, 33, 64, 0.5); stroke-width: 1.4; stroke-linejoin: round; }
+  .sgold { opacity: 0; transform-box: fill-box; transform-origin: center; }
+  .sgold .body { fill: url(#gGold); stroke: var(--ink); stroke-width: 1.6; stroke-linejoin: round; }
+  .sgold .shine { fill: #FFFFFF; opacity: 0.85; }
+  .sw.on .sgold { opacity: 1; animation: starIn 0.55s cubic-bezier(.2, 1.6, .45, 1); }
+  @keyframes starIn { 0% { transform: scale(2.3) rotate(-40deg); opacity: 0; } 55% { opacity: 1; } 100% { transform: scale(1) rotate(0); opacity: 1; } }
+  .sw::before { content: ""; position: absolute; inset: 12%; border-radius: 50%; border: 4px solid #FFE27A; opacity: 0; pointer-events: none; }
+  .sw.on::before { animation: ring 0.6s ease-out 0.22s; }
+  @keyframes ring { from { transform: scale(0.4); opacity: 1; } to { transform: scale(1.7); opacity: 0; } }
+  #resRows li { justify-content: space-between; gap: 10px; animation: rowIn 0.3s ease-out both; }
+  @keyframes rowIn { from { transform: translateX(-14px); opacity: 0; } to { transform: none; opacity: 1; } }
+  #resRows b { font: 700 16px var(--font-game); font-variant-numeric: tabular-nums; }
+  #resRows b.neg { color: #B8333A; }
+  .gtotal { display: flex; align-items: center; justify-content: center; gap: 12px; }
+  .gtotal .lbl { font: 700 19px var(--font-game); color: var(--ink-soft); }
+  #resTotal { font-size: 44px; }
+  #resFail { display: flex; flex-direction: column; gap: 12px; padding-top: 2px; }
+  .fhead { display: flex; align-items: center; justify-content: center; gap: 10px; font: 700 19px var(--font-game); color: var(--ink-soft); }
+  #failPct { font-size: 44px; }
+  .ftrack { position: relative; height: 20px; margin: 0 26px 0 6px; border-radius: 10px; border: 3px solid var(--ink); background: #FFFFFF; box-sizing: border-box; }
+  #failFill { height: 100%; width: 0; border-radius: 7px; background: repeating-linear-gradient(135deg, #5CC6F5 0 8px, var(--ice-deep) 8px 14px); transition: width 0.9s cubic-bezier(.2, .8, .3, 1); }
+  #failMe { position: absolute; top: 50%; left: 0; width: 28px; height: 28px; margin: -14px 0 0 -14px; border-radius: 50%; border: 3px solid var(--ink); background: #2B3A67; box-sizing: border-box; transition: left 0.9s cubic-bezier(.2, .8, .3, 1); }
+  .ftrack .flag { right: -30px; top: -20px; }
+  .gpanel .gtip { margin: 0; display: flex; gap: 8px; align-items: flex-start; padding: 10px 12px; border-radius: 16px; background: rgba(255, 255, 255, 0.72); border: 2px solid rgba(42, 143, 218, 0.35); font-size: 14px; line-height: 1.45; text-align: left; }
+  .gtip b { flex: none; padding: 1px 8px; border-radius: 999px; background: var(--sun); border: 2px solid var(--ink); font: 700 12px/1.5 var(--font-game); }
+  @media (prefers-reduced-motion: reduce) { .logo .bl, .tapgo, #qcard.pop, #toast.show, .gpanel, .sw.on .sgold, .sw.on::before, #resRows li, .big-btn::after, .cpop.bump, .coinchip.bump { animation: none; } .cpop.out { animation: cpopFade 0.3s forwards; } #toast.show { opacity: 1; } #failFill, #failMe { transition: none; } }
+</style>
+
+<div id="app">
+  <div id="frame">
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+      <defs>
+        <linearGradient id="gGold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFF6B0"></stop><stop offset=".5" stop-color="#FFD43B"></stop><stop offset="1" stop-color="#FF9F1C"></stop></linearGradient>
+        <linearGradient id="gRibbon" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#C6F1FF"></stop><stop offset=".45" stop-color="#6CCBF7"></stop><stop offset="1" stop-color="#2A8FDA"></stop></linearGradient>
+        <linearGradient id="gRibbonFail" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#DCE8F2"></stop><stop offset=".45" stop-color="#9DB8D2"></stop><stop offset="1" stop-color="#6787A8"></stop></linearGradient>
+        <path id="starP" d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4 6.1 20.5l1.2-6.5L2.5 9.4l6.6-.9z"></path>
+        <symbol id="ribbonS" viewBox="0 0 340 84" preserveAspectRatio="none">
+          <g stroke="#2B2140" stroke-linejoin="round" vector-effect="non-scaling-stroke">
+            <path d="M2 34H48V80H2L17 57Z" style="fill: var(--rb-tail)" stroke-width="3.5" vector-effect="non-scaling-stroke"></path>
+            <path d="M338 34H292V80H338L323 57Z" style="fill: var(--rb-tail)" stroke-width="3.5" vector-effect="non-scaling-stroke"></path>
+            <path d="M26 70H48V82Z" style="fill: var(--rb-fold)" stroke-width="3" vector-effect="non-scaling-stroke"></path>
+            <path d="M314 70H292V82Z" style="fill: var(--rb-fold)" stroke-width="3" vector-effect="non-scaling-stroke"></path>
+            <rect x="24" y="10" width="292" height="62" rx="16" style="fill: var(--rb-band)" stroke-width="4" vector-effect="non-scaling-stroke"></rect>
+            <rect x="30" y="58" width="280" height="9" rx="4.5" fill="#0B2E5C" fill-opacity=".14" stroke="none"></rect>
+            <path d="M24 26C24 15 31 10 40 10H300C309 10 316 15 316 26C310 27 306 23 300 24C294 25 292 31 284 31C276 31 275 24 268 24H230C224 24 222 34 212 34C202 34 201 24 194 24H150C144 24 142 30 134 30C126 30 124 24 118 24H82C76 24 74 32 66 32C58 32 56 24 50 24C40 24 30 28 24 26Z" fill="#FFFFFF" stroke-width="3" vector-effect="non-scaling-stroke"></path>
+          </g>
+        </symbol>
+      </defs>
+    </svg>
+    <canvas id="game" aria-label="สนามสกี"></canvas>
+    <canvas id="game3d" aria-hidden="true"></canvas>
+
+    <div id="hud" hidden>
+      <div class="topbar">
+        <button id="btnPause" class="round toy" type="button" aria-label="หยุดชั่วคราว">
+          <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><rect x="5.5" y="4" width="4.5" height="16" rx="2" fill="#2B2140"></rect><rect x="14" y="4" width="4.5" height="16" rx="2" fill="#2B2140"></rect></svg>
+        </button>
+        <div id="hearts" role="img" aria-label="หัวใจเหลือ 3 จาก 3">
+          <svg class="heart" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.5-9.2C1 8.4 3.1 5 6.6 5c2 0 3.6 1.1 5.4 3 1.8-1.9 3.4-3 5.4-3 3.5 0 5.6 3.4 4.1 6.8C19.5 16.4 12 21 12 21z"></path></svg>
+          <svg class="heart" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.5-9.2C1 8.4 3.1 5 6.6 5c2 0 3.6 1.1 5.4 3 1.8-1.9 3.4-3 5.4-3 3.5 0 5.6 3.4 4.1 6.8C19.5 16.4 12 21 12 21z"></path></svg>
+          <svg class="heart" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.5-9.2C1 8.4 3.1 5 6.6 5c2 0 3.6 1.1 5.4 3 1.8-1.9 3.4-3 5.4-3 3.5 0 5.6 3.4 4.1 6.8C19.5 16.4 12 21 12 21z"></path></svg>
+        </div>
+        <div class="spacer"></div>
+        <div id="timer" class="plank outline">0:00</div>
+        <div class="coinchip toy">
+          <svg width="28" height="28" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10.5" fill="#FFC93C" stroke="#2B2140" stroke-width="1.8"></circle><path d="M12 6.5v11M7.2 9.2l9.6 5.6M7.2 14.8l9.6-5.6" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"></path></svg>
+          <span id="coins">0</span>
+        </div>
+      </div>
+      <div id="prog" role="img" aria-label="ความคืบหน้าในด่าน">
+        <div id="progFill"></div>
+        <div id="progRival" class="pmark" hidden></div>
+        <div id="progMe" class="pmark"></div>
+        <svg class="flag" width="26" height="32" viewBox="0 0 22 26" aria-hidden="true"><rect x="3" y="2" width="3" height="23" rx="1.5" fill="#2B2140"></rect><path d="M6 3h14l-3.5 4.5L20 12H6z" fill="#FF5C93" stroke="#2B2140" stroke-width="1.6" stroke-linejoin="round"></path></svg>
+      </div>
+      <div id="pups" hidden></div>
+      <div id="cpops" aria-hidden="true"></div>
+      <div id="qcard" hidden>
+        <svg width="56" height="56" viewBox="0 0 60 60" aria-hidden="true" style="flex: none"><circle cx="30" cy="30" r="25" fill="#FFFFFF" stroke="#2B2140" stroke-width="3"></circle><circle id="qring" cx="30" cy="30" r="25" fill="none" stroke="#FF5C93" stroke-width="7" stroke-linecap="round" stroke-dasharray="157" stroke-dashoffset="0" transform="rotate(-90 30 30)"></circle></svg>
+        <div class="qt">
+          <span id="qhint">เลี้ยวผ่านประตูคำตอบ!</span>
+          <span id="qtext" aria-live="polite">?</span>
+        </div>
+      </div>
+      <div id="toast" aria-live="polite"></div>
+    </div>
+    <div id="pad" hidden><div id="padDot"></div></div>
+
+    <section id="screen-title" class="screen" aria-label="หน้าแรก">
+      <h1 class="logo" aria-label="Pippy The Ski Penguin"><span class="logo-pip"><span class="bl" style="color:#FF5C93">P</span><span class="bl" style="color:#FFC93C;animation-delay:.12s">i</span><span class="bl" style="color:#3FA9F5;animation-delay:.24s">p</span><span class="bl" style="color:#FF5C93;animation-delay:.36s">p</span><span class="bl" style="color:#FFC93C;animation-delay:.48s">y</span></span><span class="logo-sub">The Ski Penguin</span></h1>
+      <div class="ribbon outline">คิดไว · เลี้ยวตอบ!</div>
+      <div class="sheet">
+        <button id="btnPlay" class="big-btn outline" type="button">
+          <svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l12-7.5z" fill="#FFFFFF" stroke="#2B2140" stroke-width="2" stroke-linejoin="round"></path></svg>
+          เล่นเลย!
+        </button>
+        <div class="row2">
+          <button id="btnEndless" class="big-btn blue outline" type="button">
+            <span>ไถลไม่รู้จบ <span class="best" id="endlessBest">ยังไม่มีสถิติ</span></span>
+          </button>
+        </div>
+        <button id="btnMap" class="ice-btn wide map-btn" type="button">
+          <svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><path class="ico-fill" d="M3 6.5l5.5-2.5 7 2.5L21 4v13.5l-5.5 2.5-7-2.5L3 20z" stroke="#2B2140" stroke-width="1.8" stroke-linejoin="round"></path><path d="M8.5 4v13.5M15.5 6.5V20" stroke="#2B2140" stroke-width="1.6"></path></svg>
+          <span class="lbl">แผนที่ด่าน</span>
+          <span class="map-count"><svg class="mstar" viewBox="0 0 24 24" aria-hidden="true"><use href="#starP"></use></svg><span id="mapCount">0/18</span></span>
+        </button>
+        <div class="settings" aria-label="ตั้งค่า">
+          <span style="font: 700 13px var(--font-game); color: var(--ink-soft)">ความเร็ว</span>
+          <button class="chip-btn" type="button" data-speed="0.85" aria-pressed="false">ช้า</button>
+          <button class="chip-btn" type="button" data-speed="1" aria-pressed="true">ปกติ</button>
+          <button class="chip-btn" type="button" data-speed="1.15" aria-pressed="false">เร็ว</button>
+          <button id="btnMusic" class="chip-btn" type="button" aria-pressed="true">เพลง</button>
+          <button id="btnSfx" class="chip-btn" type="button" aria-pressed="true">เสียง</button>
+          <button id="btnGfx" class="chip-btn" type="button" aria-pressed="true">ภาพสูง</button>
+        </div>
+        <p class="help">แตะค้างแล้วเลื่อนซ้าย-ขวา = เลี้ยว · แตะสั้นหรือปัดขึ้น = กระโดด · แตะซ้ำกลางอากาศ = ตีลังกา<br>คีย์บอร์ด: ← → เลี้ยว · Space กระโดด · P หยุด</p>
+      </div>
+    </section>
+
+    <section id="screen-map" class="screen" hidden aria-label="แผนที่ด่าน">
+      <div id="mapScroll">
+        <div id="mapWorld">
+          <svg class="map-bg" viewBox="0 0 390 1100" aria-hidden="true">
+            <defs>
+              <symbol id="mtree" viewBox="0 0 40 52"><g stroke="#2B2140" stroke-width="2.2" stroke-linejoin="round"><rect x="17" y="40" width="6" height="10" rx="2" fill="#9A5B2E"></rect><path d="M20 14 L37 42 Q20 47 3 42 Z" fill="#1AA56A"></path><path d="M20 2 L32 26 Q20 30 8 26 Z" fill="#28C17F"></path></g><path d="M20 3 L26 13 Q23 11 21 14 Q20 11 18 14 Q16 11 14 13 Z" fill="#FFFFFF"></path><path d="M8 40 Q14 36 20 40 Q26 36 32 40 L35 42 Q20 47 5 42 Z" fill="#FFFFFF"></path></symbol>
+            </defs>
+            <path d="M0 230 L0 120 L60 62 L112 112 L172 28 L242 118 L302 48 L390 140 L390 230 Z" fill="#AFC2F6"></path>
+            <path d="M172 28 L190 52 Q182 48 178 55 Q172 48 166 55 Q160 49 154 52 Z M302 48 L318 68 Q312 65 308 71 Q302 65 296 71 Q291 66 286 68 Z M60 62 L74 80 Q69 77 65 83 Q60 77 55 83 Q50 78 46 80 Z" fill="#FFFFFF"></path>
+            <path d="M172 28 L242 118 L186 118 Z M302 48 L390 140 L318 140 Z" fill="#FFFFFF" fill-opacity=".25"></path>
+            <path d="M0 250 Q100 180 200 212 Q300 244 390 190 L390 300 L0 300 Z" fill="#FFFFFF"></path>
+            <path d="M0 262 Q100 196 200 226 Q300 256 390 204" fill="none" stroke="#DCE8FF" stroke-width="6"></path>
+            <ellipse cx="82" cy="905" rx="64" ry="18" fill="#E6EFFF"></ellipse>
+            <ellipse cx="318" cy="650" rx="60" ry="16" fill="#E6EFFF"></ellipse>
+            <ellipse cx="300" cy="420" rx="58" ry="22" fill="#CBEFFF" stroke="#2B2140" stroke-width="3"></ellipse>
+            <path d="M268 414 L284 428 M300 410 L318 426" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"></path>
+            <path d="M110 1100 L110 980 C110 920 270 920 270 860 C270 800 130 800 130 730 C130 660 260 670 260 600 C260 530 120 540 120 470 C120 400 220 400 220 330 C220 262 195 236 195 178" fill="none" stroke="#2B2140" stroke-width="36" stroke-linecap="round"></path>
+            <path d="M110 1100 L110 980 C110 920 270 920 270 860 C270 800 130 800 130 730 C130 660 260 670 260 600 C260 530 120 540 120 470 C120 400 220 400 220 330 C220 262 195 236 195 178" fill="none" stroke="#FFFFFF" stroke-width="28" stroke-linecap="round"></path>
+            <path d="M110 1100 L110 980 C110 920 270 920 270 860 C270 800 130 800 130 730 C130 660 260 670 260 600 C260 530 120 540 120 470 C120 400 220 400 220 330 C220 262 195 236 195 178" fill="none" stroke="#9CC8F0" stroke-width="3" stroke-dasharray="10 12" stroke-linecap="round"></path>
+            <use href="#mtree" x="6" y="300" width="40" height="52"></use>
+            <use href="#mtree" x="34" y="340" width="32" height="42"></use>
+            <use href="#mtree" x="12" y="560" width="40" height="52"></use>
+            <use href="#mtree" x="44" y="610" width="30" height="39"></use>
+            <use href="#mtree" x="4" y="800" width="44" height="57"></use>
+            <use href="#mtree" x="22" y="1010" width="40" height="52"></use>
+            <use href="#mtree" x="338" y="270" width="40" height="52"></use>
+            <use href="#mtree" x="346" y="520" width="36" height="47"></use>
+            <use href="#mtree" x="334" y="720" width="44" height="57"></use>
+            <use href="#mtree" x="316" y="960" width="40" height="52"></use>
+            <use href="#mtree" x="346" y="1010" width="32" height="42"></use>
+            <use href="#mtree" x="176" y="1010" width="34" height="44"></use>
+            <g transform="translate(330 790)" stroke="#2B2140" stroke-width="2.2"><circle cx="0" cy="16" r="15" fill="#FFFFFF"></circle><circle cx="0" cy="-6" r="10" fill="#FFFFFF"></circle><rect x="-8" y="-24" width="16" height="9" rx="2" fill="#2B2140"></rect><path d="M0 -5 L9 -3 L0 -1 Z" fill="#FF9A1F" stroke="none"></path></g>
+            <g stroke="#2B2140" stroke-width="2" stroke-linejoin="round"><rect x="168" y="262" width="3" height="40" fill="#2B2140"></rect><path d="M171 264 H192 L186 271 L192 278 H171 Z" fill="#FF5C93"></path><rect x="268" y="270" width="3" height="40" fill="#2B2140"></rect><path d="M271 272 H292 L286 279 L292 286 H271 Z" fill="#FFC93C"></path></g>
+          </svg>
+          <div class="msign" style="left:50%; top:13.2%"><svg width="18" height="20" viewBox="0 0 18 20" aria-hidden="true"><rect x="2" y="8" width="14" height="11" rx="3" fill="#8C84A8" stroke="#2B2140" stroke-width="2"></rect><path d="M5 8V6a4 4 0 0 1 8 0v2" fill="none" stroke="#2B2140" stroke-width="2.4"></path></svg><span><b>โลก 2 · ป่าสน</b><small>ยังไม่มีในต้นแบบ</small></span></div>
+          <div id="mapNodes"></div>
+          <canvas id="mapPip" width="180" height="222" aria-hidden="true"></canvas>
+        </div>
+      </div>
+      <div class="map-top">
+        <button id="btnMapBack" class="round toy" type="button" aria-label="กลับหน้าแรก">
+          <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="#2B2140" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+        </button>
+        <div class="map-title"><span class="gtext" data-text="โลก 1 · ทุ่งหิมะ">โลก 1 · ทุ่งหิมะ</span></div>
+        <div class="coinchip toy map-stars"><svg class="mstar" viewBox="0 0 24 24" aria-hidden="true"><use href="#starP"></use></svg><span id="mapStars">0/18</span></div>
+      </div>
+    </section>
+
+    <section id="screen-intro" class="screen" hidden aria-label="เริ่มด่าน">
+      <button id="btnIntroBack" class="round toy" type="button" aria-label="กลับหน้าแรก">
+        <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="#2B2140" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+      </button>
+      <div class="gpanel">
+        <div class="gribbon"><svg aria-hidden="true"><use href="#ribbonS" width="100%" height="100%"></use></svg><h2><span class="gtext" id="introName" data-text="แรกไถล">แรกไถล</span></h2></div>
+        <span class="gbadge" id="introNum">ด่าน 1</span>
+        <p id="introTip"></p>
+        <ul class="gwell" id="introGoals"></ul>
+      </div>
+      <div class="tapgo outline">แตะค้างที่ไหนก็ได้เพื่อเริ่ม!</div>
+    </section>
+
+    <section id="screen-pause" class="screen scrim" hidden aria-label="หยุดชั่วคราว">
+      <div class="gpanel">
+        <div class="gribbon"><svg aria-hidden="true"><use href="#ribbonS" width="100%" height="100%"></use></svg><h2><span class="gtext" data-text="หยุดพัก">หยุดพัก</span></h2></div>
+        <button id="btnResume" class="big-btn outline" type="button">
+          <svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><path class="ico-fill" d="M7 4.5v15l12-7.5z" stroke="#2B2140" stroke-width="2" stroke-linejoin="round"></path></svg>
+          เล่นต่อ
+        </button>
+        <div class="gbar">
+          <button id="btnRestart" class="ice-btn wide" type="button">
+            <svg width="28" height="28" viewBox="0 0 24 24" aria-hidden="true"><path d="M18.6 8.4A7.2 7.2 0 1 0 19.2 14" fill="none" stroke="#2B2140" stroke-width="6" stroke-linecap="round"></path><path class="ico-stroke" d="M18.6 8.4A7.2 7.2 0 1 0 19.2 14" fill="none" stroke-width="2.8" stroke-linecap="round"></path><path class="ico-fill" d="M21.6 3.6l-.4 7.2-6.9-2.3z" stroke="#2B2140" stroke-width="1.6" stroke-linejoin="round"></path></svg>
+            <span class="lbl">เริ่มใหม่</span>
+          </button>
+          <button id="btnHome" class="ice-btn wide" type="button">
+            <svg width="28" height="28" viewBox="0 0 24 24" aria-hidden="true"><path class="ico-fill" d="M3.5 11.5 12 4l8.5 7.5h-2.2V20h-4.6v-5h-3.4v5H5.7v-8.5z" stroke="#2B2140" stroke-width="1.8" stroke-linejoin="round"></path></svg>
+            <span class="lbl">หน้าแรก</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section id="screen-result" class="screen scrim" hidden aria-label="สรุปผล">
+      <div class="gpanel" id="resPanel">
+        <div class="gribbon"><svg aria-hidden="true"><use href="#ribbonS" width="100%" height="100%"></use></svg><h2><span class="gtext" id="resTitle" data-text="ผ่านด่าน!">ผ่านด่าน!</span></h2></div>
+        <div id="resStars" role="img" aria-label="ดาวที่ได้">
+          <span class="sw"><svg viewBox="0 0 24 24" aria-hidden="true"><use class="sock" href="#starP"></use><g class="sgold"><use class="body" href="#starP"></use><ellipse class="shine" cx="8.6" cy="9.2" rx="1.3" ry="2.5" transform="rotate(38 8.6 9.2)"></ellipse></g></svg></span>
+          <span class="sw"><svg viewBox="0 0 24 24" aria-hidden="true"><use class="sock" href="#starP"></use><g class="sgold"><use class="body" href="#starP"></use><ellipse class="shine" cx="8.6" cy="9.2" rx="1.3" ry="2.5" transform="rotate(38 8.6 9.2)"></ellipse></g></svg></span>
+          <span class="sw"><svg viewBox="0 0 24 24" aria-hidden="true"><use class="sock" href="#starP"></use><g class="sgold"><use class="body" href="#starP"></use><ellipse class="shine" cx="8.6" cy="9.2" rx="1.3" ry="2.5" transform="rotate(38 8.6 9.2)"></ellipse></g></svg></span>
+        </div>
+        <div id="resFail" hidden>
+          <div class="fhead"><span>ไปได้</span><span class="gtext" id="failPct" data-text="0%">0%</span><span>ของด่าน</span></div>
+          <div class="ftrack" role="img" aria-label="ระยะที่ไปได้">
+            <div id="failFill"></div>
+            <span id="failMe"></span>
+            <svg class="flag" width="26" height="32" viewBox="0 0 22 26" aria-hidden="true"><rect x="3" y="2" width="3" height="23" rx="1.5" fill="#2B2140"></rect><path d="M6 3h14l-3.5 4.5L20 12H6z" fill="#FF5C93" stroke="#2B2140" stroke-width="1.6" stroke-linejoin="round"></path></svg>
+          </div>
+          <p class="gtip"><b>เคล็ดลับ</b><span id="failTip"></span></p>
+        </div>
+        <ul id="resRows" class="gwell"></ul>
+        <div class="gtotal" id="resTotalRow"><span class="lbl">คะแนน</span><span class="gtext gold" id="resTotal" data-text="0">0</span></div>
+        <div class="gbar">
+          <button id="btnResHome" class="ice-btn" type="button" aria-label="แผนที่ด่าน">
+            <svg width="28" height="28" viewBox="0 0 24 24" aria-hidden="true"><path class="ico-fill" d="M3 6.5l5.5-2.5 7 2.5L21 4v13.5l-5.5 2.5-7-2.5L3 20z" stroke="#2B2140" stroke-width="1.8" stroke-linejoin="round"></path><path d="M8.5 4v13.5M15.5 6.5V20" stroke="#2B2140" stroke-width="1.6"></path></svg>
+          </button>
+          <button id="btnRetry" class="ice-btn" type="button" aria-label="เล่นอีกครั้ง">
+            <svg width="28" height="28" viewBox="0 0 24 24" aria-hidden="true"><path d="M18.6 8.4A7.2 7.2 0 1 0 19.2 14" fill="none" stroke="#2B2140" stroke-width="6" stroke-linecap="round"></path><path class="ico-stroke" d="M18.6 8.4A7.2 7.2 0 1 0 19.2 14" fill="none" stroke-width="2.8" stroke-linecap="round"></path><path class="ico-fill" d="M21.6 3.6l-.4 7.2-6.9-2.3z" stroke="#2B2140" stroke-width="1.6" stroke-linejoin="round"></path></svg>
+            <span class="lbl">เล่นอีกครั้ง</span>
+          </button>
+          <button id="btnNext" class="big-btn outline" type="button">
+            ด่านต่อไป
+            <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path class="ico-fill" d="M7 4.5v15l12-7.5z" stroke="#2B2140" stroke-width="2" stroke-linejoin="round"></path></svg>
+          </button>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<script>
+  // ?debug shows script errors on screen (handy on phones without a console).
+  if (/[?&]debug\b/.test(location.search)) {
+    window.addEventListener('error', (e) => {
+      const d = document.getElementById('dbg') || Object.assign(document.body.appendChild(document.createElement('pre')), { id: 'dbg' });
+      d.style.cssText = 'position:fixed;left:0;right:0;bottom:0;max-height:40%;overflow:auto;margin:0;padding:8px;background:rgba(0,0,0,.8);color:#fff;font:11px monospace;z-index:999;white-space:pre-wrap';
+      d.textContent += (e.message || e.error) + ' @ ' + (e.filename || '').split('/').pop() + ':' + e.lineno + '\n';
+    });
+  }
+</script>
+<script src="js/audio.js?v=13"></script>
+<script src="js/art.js?v=13"></script>
+<script src="js/levels.js?v=15"></script>
+<script src="js/render.js?v=14"></script>
+<script src="js/game.js?v=14"></script>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.min.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
+<script type="module" src="js/render3d.js?v=16"></script>

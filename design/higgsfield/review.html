@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pip v2 — Art &amp; Music Review</title>
+<style>
+:root{--bg:#F7FBFF;--fg:#1F2A4D;--muted:#5b6788;--card:#fff;--line:#CDEBFF;--accent:#D6336F}
+@media (prefers-color-scheme:dark){:root{--bg:#141a2e;--fg:#e8eefc;--muted:#9aa6c8;--card:#1f2742;--line:#2b3658;--accent:#FF9EC4}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+header{padding:28px 16px 8px;max-width:1280px;margin:auto}h1{margin:0 0 4px;font-size:26px}header p{margin:0;color:var(--muted)}
+nav{position:sticky;top:0;background:var(--bg);border-bottom:1px solid var(--line);padding:8px 16px;z-index:2;display:flex;gap:14px;flex-wrap:wrap;justify-content:center}
+nav a{color:var(--fg);text-decoration:none;font-weight:600}nav a:hover{color:var(--accent)}
+main{max-width:1280px;margin:auto;padding:0 16px 48px}section{padding-top:24px}h2{font-size:22px;margin:8px 0}h2 small{color:var(--muted);font-weight:400;font-size:15px}
+h3{font-size:15px;color:var(--muted);margin:18px 0 8px;text-transform:uppercase;letter-spacing:.04em}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}.grid.sm{grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:10px}
+.card{margin:0;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}.card img{display:block;width:100%;height:auto;background:var(--line)}
+figcaption{padding:8px 10px;font-size:13px;font-weight:600}.sm figcaption{font-size:11px;font-weight:500}
+.note{display:block;font-weight:400;color:var(--muted);font-size:12px;margin-top:2px}.sm .note{font-size:10.5px}
+.tag{display:inline-block;margin-left:6px;padding:0 6px;border-radius:8px;background:var(--accent);color:#fff;font-size:11px}
+details.rej{margin-top:16px;border:1px dashed var(--line);border-radius:10px;padding:6px 10px}details.rej summary{cursor:pointer;color:var(--muted);font-size:13px}
+details.rej .grid{margin-top:10px;opacity:.85}
+.tracks{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}.track{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.track b{display:block;margin-bottom:6px;font-size:14px}.track audio{width:100%}
+</style>
+</head>
+<body>
+<header><h1>Pip v2 — Art &amp; Music Review</h1><p>Matte clay toy style (probe-0) · Pip reference = pipsig-0 · click any image for the full-size file</p></header>
+<nav><a href="#chars">ตัวละคร</a><a href="#worlds">โลก</a><a href="#props">ของประกอบฉาก</a><a href="#vfx">เอฟเฟกต์</a><a href="#title">หน้าแรกและ UI</a><a href="#music">เพลง</a></nav>
+<main>
+<section id="chars"><h2>ตัวละคร <small>Characters</small></h2>
+<h3>Pip redesign</h3>
+<div class="grid">
+<figure class="card"><a href="full/pipsig-0.png"><img loading="lazy" src="thumbs/pipsig-0.jpg" alt="pipsig-0"></a><figcaption>pipsig-0 · Pip redesign, matte 0<span class="tag">chosen</span></figcaption></figure>
+<figure class="card"><a href="full/pipsig-1.png"><img loading="lazy" src="thumbs/pipsig-1.jpg" alt="pipsig-1"></a><figcaption>pipsig-1 · Pip redesign, matte 1</figcaption></figure>
+<figure class="card"><a href="full/pipsig-2.png"><img loading="lazy" src="thumbs/pipsig-2.jpg" alt="pipsig-2"></a><figcaption>pipsig-2 · Pip redesign, matte 2</figcaption></figure>
+</div>
+<h3>Pip sheets</h3>
+<div class="grid">
+<figure class="card"><a href="full/c01x-pip-expressions.png"><img loading="lazy" src="thumbs/c01x-pip-expressions.jpg" alt="c01x"></a><figcaption>c01x · Pip Expressions</figcaption></figure>
+<figure class="card"><a href="full/c01p-pip-ski-poses.png"><img loading="lazy" src="thumbs/c01p-pip-ski-poses.jpg" alt="c01p"></a><figcaption>c01p · Pip Ski Poses<span class="note">kept as best available: &#x27;FINISH&#x27; lettering on the finish banner needs painting out (the regeneration was worse)</span></figcaption></figure>
+</div>
+<h3>Cast</h3>
+<div class="grid">
+<figure class="card"><a href="full/c02-mochi.png"><img loading="lazy" src="thumbs/c02-mochi.jpg" alt="c02"></a><figcaption>c02 · Mochi</figcaption></figure>
+<figure class="card"><a href="full/c03-kuri.png"><img loading="lazy" src="thumbs/c03-kuri.jpg" alt="c03"></a><figcaption>c03 · Kuri</figcaption></figure>
+<figure class="card"><a href="full/c04-nuri.png"><img loading="lazy" src="thumbs/c04-nuri.jpg" alt="c04"></a><figcaption>c04 · Nuri</figcaption></figure>
+<figure class="card"><a href="full/c05-juni.png"><img loading="lazy" src="thumbs/c05-juni.jpg" alt="c05"></a><figcaption>c05 · Juni</figcaption></figure>
+<figure class="card"><a href="full/c06-tub.png"><img loading="lazy" src="thumbs/c06-tub.jpg" alt="c06"></a><figcaption>c06 · Tub</figcaption></figure>
+<figure class="card"><a href="full/c07-taro.png"><img loading="lazy" src="thumbs/c07-taro.jpg" alt="c07"></a><figcaption>c07 · Taro</figcaption></figure>
+<figure class="card"><a href="full/c08-puff.png"><img loading="lazy" src="thumbs/c08-puff.jpg" alt="c08"></a><figcaption>c08 · Puff</figcaption></figure>
+<figure class="card"><a href="full/c09-captain-walrus.png"><img loading="lazy" src="thumbs/c09-captain-walrus.jpg" alt="c09"></a><figcaption>c09 · Captain Walrus</figcaption></figure>
+<figure class="card"><a href="full/c10a-yeti-jr.png"><img loading="lazy" src="thumbs/c10a-yeti-jr.jpg" alt="c10a"></a><figcaption>c10a · Yeti Jr.</figcaption></figure>
+<figure class="card"><a href="full/c10b-mammoth-jr.png"><img loading="lazy" src="thumbs/c10b-mammoth-jr.jpg" alt="c10b"></a><figcaption>c10b · Mammoth Jr.<span class="tag">chosen</span><span class="note">ผู้ใช้เลือกแมมมอธแทนเยติ (c10a) 5 พ.ย.</span></figcaption></figure>
+<figure class="card"><a href="full/r01-benny.png"><img loading="lazy" src="thumbs/r01-benny.jpg" alt="r01"></a><figcaption>r01 · Benny</figcaption></figure>
+<figure class="card"><a href="full/r02-ollie.png"><img loading="lazy" src="thumbs/r02-ollie.jpg" alt="r02"></a><figcaption>r02 · Ollie</figcaption></figure>
+<figure class="card"><a href="full/r03-pearl.png"><img loading="lazy" src="thumbs/r03-pearl.jpg" alt="r03"></a><figcaption>r03 · Pearl</figcaption></figure>
+<figure class="card"><a href="full/r05a-big-yeti.png"><img loading="lazy" src="thumbs/r05a-big-yeti.jpg" alt="r05a"></a><figcaption>r05a · Big Yeti</figcaption></figure>
+<figure class="card"><a href="full/r05b-big-mammoth.png"><img loading="lazy" src="thumbs/r05b-big-mammoth.jpg" alt="r05b"></a><figcaption>r05b · Big Mammoth<span class="tag">chosen</span><span class="note">บอสโลก 5 — ผู้ใช้เลือกแมมมอธแทนเยติ (r05a) 5 พ.ย.</span></figcaption></figure>
+</div>
+<h3>Style probes (phase A)</h3>
+<div class="grid">
+<figure class="card"><a href="full/probe-0.png"><img loading="lazy" src="thumbs/probe-0.jpg" alt="probe-0"></a><figcaption>probe-0 · Pip style probe A (brief as written)</figcaption></figure>
+<figure class="card"><a href="full/probe-1.png"><img loading="lazy" src="thumbs/probe-1.jpg" alt="probe-1"></a><figcaption>probe-1 · Pip style probe B (soft vinyl toy)</figcaption></figure>
+<figure class="card"><a href="full/probe-2.png"><img loading="lazy" src="thumbs/probe-2.jpg" alt="probe-2"></a><figcaption>probe-2 · Pip style probe C (sculpted game-engine)</figcaption></figure>
+</div>
+<details class="rej"><summary>Rejected / superseded (21)</summary>
+<div class="grid sm">
+<figure class="card sm"><a href="full/pipsig-gloss-0.png"><img loading="lazy" src="thumbs/pipsig-gloss-0.jpg" alt="pipsig-gloss-0"></a><figcaption>pipsig-gloss-0 · Pip redesign, gloss 0<span class="note">style superseded by probe-0</span></figcaption></figure>
+<figure class="card sm"><a href="full/pipsig-gloss-1.png"><img loading="lazy" src="thumbs/pipsig-gloss-1.jpg" alt="pipsig-gloss-1"></a><figcaption>pipsig-gloss-1 · Pip redesign, gloss 1<span class="note">style superseded by probe-0</span></figcaption></figure>
+<figure class="card sm"><a href="full/pipsig-gloss-2.png"><img loading="lazy" src="thumbs/pipsig-gloss-2.jpg" alt="pipsig-gloss-2"></a><figcaption>pipsig-gloss-2 · Pip redesign, gloss 2<span class="note">style superseded by probe-0</span></figcaption></figure>
+<figure class="card sm"><a href="full/c02-mochi-vinyl.png"><img loading="lazy" src="thumbs/c02-mochi-vinyl.jpg" alt="c02"></a><figcaption>c02 · Mochi (vinyl pass)<span class="note">style reference superseded</span></figcaption></figure>
+<figure class="card sm"><a href="full/c03-kuri-vinyl.png"><img loading="lazy" src="thumbs/c03-kuri-vinyl.jpg" alt="c03"></a><figcaption>c03 · Kuri (vinyl pass)<span class="note">style reference superseded</span></figcaption></figure>
+<figure class="card sm"><a href="full/c04-nuri-vinyl.png"><img loading="lazy" src="thumbs/c04-nuri-vinyl.jpg" alt="c04"></a><figcaption>c04 · Nuri (vinyl pass)<span class="note">style reference superseded</span></figcaption></figure>
+<figure class="card sm"><a href="full/c05-juni-vinyl.png"><img loading="lazy" src="thumbs/c05-juni-vinyl.jpg" alt="c05"></a><figcaption>c05 · Juni (vinyl pass)<span class="note">style reference superseded</span></figcaption></figure>
+<figure class="card sm"><a href="full/c06-tub-vinyl.png"><img loading="lazy" src="thumbs/c06-tub-vinyl.jpg" alt="c06"></a><figcaption>c06 · Tub (vinyl pass)<span class="note">style reference superseded</span></figcaption></figure>
+<figure class="card sm"><a href="full/c07-taro-vinyl.png"><img loading="lazy" src="thumbs/c07-taro-vinyl.jpg" alt="c07"></a><figcaption>c07 · Taro (vinyl pass)<span class="note">style reference superseded</span></figcaption></figure>
+<figure class="card sm"><a href="full/c08-puff-vinyl.png"><img loading="lazy" src="thumbs/c08-puff-vinyl.jpg" alt="c08"></a><figcaption>c08 · Puff (vinyl pass)<span class="note">style reference superseded</span></figcaption></figure>
+<figure class="card sm"><a href="full/c09-captain-walrus-vinyl.png"><img loading="lazy" src="thumbs/c09-captain-walrus-vinyl.jpg" alt="c09"></a><figcaption>c09 · Captain Walrus (vinyl pass)<span class="note">style reference superseded</span></figcaption></figure>
+<figure class="card sm"><a href="full/c10a-yeti-jr-vinyl.png"><img loading="lazy" src="thumbs/c10a-yeti-jr-vinyl.jpg" alt="c10a"></a><figcaption>c10a · Yeti Jr. (vinyl pass)<span class="note">style reference superseded</span></figcaption></figure>
+<figure class="card sm"><a href="full/c10b-mammoth-jr-vinyl.png"><img loading="lazy" src="thumbs/c10b-mammoth-jr-vinyl.jpg" alt="c10b"></a><figcaption>c10b · Mammoth Jr. (vinyl pass)<span class="note">style reference superseded</span></figcaption></figure>
+<figure class="card sm"><a href="full/r01-benny-vinyl.png"><img loading="lazy" src="thumbs/r01-benny-vinyl.jpg" alt="r01"></a><figcaption>r01 · Benny (vinyl pass)<span class="note">style reference superseded</span></figcaption></figure>
+<figure class="card sm"><a href="full/r02-ollie-vinyl.png"><img loading="lazy" src="thumbs/r02-ollie-vinyl.jpg" alt="r02"></a><figcaption>r02 · Ollie (vinyl pass)<span class="note">style reference superseded</span></figcaption></figure>
+<figure class="card sm"><a href="full/r03-pearl-vinyl.png"><img loading="lazy" src="thumbs/r03-pearl-vinyl.jpg" alt="r03"></a><figcaption>r03 · Pearl (vinyl pass)<span class="note">style reference superseded</span></figcaption></figure>
+<figure class="card sm"><a href="full/r05a-big-yeti-vinyl.png"><img loading="lazy" src="thumbs/r05a-big-yeti-vinyl.jpg" alt="r05a"></a><figcaption>r05a · Big Yeti (vinyl pass)<span class="note">style reference superseded</span></figcaption></figure>
+<figure class="card sm"><a href="full/r05b-big-mammoth-vinyl.png"><img loading="lazy" src="thumbs/r05b-big-mammoth-vinyl.jpg" alt="r05b"></a><figcaption>r05b · Big Mammoth (vinyl pass)<span class="note">style reference superseded</span></figcaption></figure>
+<figure class="card sm"><a href="full/c06-tub-rej1.png"><img loading="lazy" src="thumbs/c06-tub-rej1.jpg" alt="c06"></a><figcaption>c06 · Tub<span class="note">copied the reference hero&#x27;s beanie and goggles instead of its own look (accessory bleed)</span></figcaption></figure>
+<figure class="card sm"><a href="full/r05a-big-yeti-rej1.png"><img loading="lazy" src="thumbs/r05a-big-yeti-rej1.jpg" alt="r05a"></a><figcaption>r05a · Big Yeti<span class="note">copied the reference hero&#x27;s beanie, goggles and coral scarf (accessory bleed); not a gentle giant</span></figcaption></figure>
+<figure class="card sm"><a href="full/c01p-pip-ski-poses-rej2.png"><img loading="lazy" src="thumbs/c01p-pip-ski-poses-rej2.jpg" alt="c01p"></a><figcaption>c01p · Pip Ski Poses<span class="note">regeneration added a caption under every pose and repeated &#x27;carving left&#x27;; original kept</span></figcaption></figure>
+</div>
+</details>
+</section>
+<section id="worlds"><h2>โลก <small>Worlds</small></h2>
+<h3>Key art (16:9)</h3>
+<div class="grid">
+<figure class="card"><a href="full/w1k-marshmallow-meadow-key-art.png"><img loading="lazy" src="thumbs/w1k-marshmallow-meadow-key-art.jpg" alt="w1k"></a><figcaption>w1k · Marshmallow Meadow Key Art</figcaption></figure>
+<figure class="card"><a href="full/w2k-whispering-pines-key-art.png"><img loading="lazy" src="thumbs/w2k-whispering-pines-key-art.jpg" alt="w2k"></a><figcaption>w2k · Whispering Pines Key Art</figcaption></figure>
+<figure class="card"><a href="full/w3k-crystal-lake-key-art.png"><img loading="lazy" src="thumbs/w3k-crystal-lake-key-art.jpg" alt="w3k"></a><figcaption>w3k · Crystal Lake Key Art</figcaption></figure>
+<figure class="card"><a href="full/w4k-lantern-village-key-art.png"><img loading="lazy" src="thumbs/w4k-lantern-village-key-art.jpg" alt="w4k"></a><figcaption>w4k · Lantern Village Key Art</figcaption></figure>
+<figure class="card"><a href="full/w5k-aurora-peak-key-art.png"><img loading="lazy" src="thumbs/w5k-aurora-peak-key-art.jpg" alt="w5k"></a><figcaption>w5k · Aurora Peak Key Art</figcaption></figure>
+</div>
+<h3>Gameplay mocks (9:16)</h3>
+<div class="grid">
+<figure class="card"><a href="full/w1g-marshmallow-meadow-gameplay.png"><img loading="lazy" src="thumbs/w1g-marshmallow-meadow-gameplay.jpg" alt="w1g"></a><figcaption>w1g · Marshmallow Meadow Gameplay</figcaption></figure>
+<figure class="card"><a href="full/w2g-whispering-pines-gameplay.png"><img loading="lazy" src="thumbs/w2g-whispering-pines-gameplay.jpg" alt="w2g"></a><figcaption>w2g · Whispering Pines Gameplay</figcaption></figure>
+<figure class="card"><a href="full/w3g-crystal-lake-gameplay.png"><img loading="lazy" src="thumbs/w3g-crystal-lake-gameplay.jpg" alt="w3g"></a><figcaption>w3g · Crystal Lake Gameplay</figcaption></figure>
+<figure class="card"><a href="full/w4g-lantern-village-gameplay.png"><img loading="lazy" src="thumbs/w4g-lantern-village-gameplay.jpg" alt="w4g"></a><figcaption>w4g · Lantern Village Gameplay<span class="note">small &#x27;MENU&#x27; lettering on two chalkboards needs painting out</span></figcaption></figure>
+<figure class="card"><a href="full/w5g-aurora-peak-gameplay.png"><img loading="lazy" src="thumbs/w5g-aurora-peak-gameplay.jpg" alt="w5g"></a><figcaption>w5g · Aurora Peak Gameplay</figcaption></figure>
+</div>
+<details class="rej"><summary>Rejected / superseded (7)</summary>
+<div class="grid sm">
+<figure class="card sm"><a href="full/w1k-marshmallow-meadow-key-art-vinyl.png"><img loading="lazy" src="thumbs/w1k-marshmallow-meadow-key-art-vinyl.jpg" alt="w1k"></a><figcaption>w1k · Marshmallow Meadow Key Art (vinyl pass)<span class="note">style superseded (vinyl STYLE_LOCKED text); regenerated in the matte style</span></figcaption></figure>
+<figure class="card sm"><a href="full/w2k-whispering-pines-key-art-vinyl.png"><img loading="lazy" src="thumbs/w2k-whispering-pines-key-art-vinyl.jpg" alt="w2k"></a><figcaption>w2k · Whispering Pines Key Art (vinyl pass)<span class="note">style superseded (vinyl STYLE_LOCKED text); regenerated in the matte style</span></figcaption></figure>
+<figure class="card sm"><a href="full/w3k-crystal-lake-key-art-vinyl.png"><img loading="lazy" src="thumbs/w3k-crystal-lake-key-art-vinyl.jpg" alt="w3k"></a><figcaption>w3k · Crystal Lake Key Art (vinyl pass)<span class="note">style superseded (vinyl STYLE_LOCKED text); regenerated in the matte style</span></figcaption></figure>
+<figure class="card sm"><a href="full/w4k-lantern-village-key-art-vinyl.png"><img loading="lazy" src="thumbs/w4k-lantern-village-key-art-vinyl.jpg" alt="w4k"></a><figcaption>w4k · Lantern Village Key Art (vinyl pass)<span class="note">style superseded (vinyl STYLE_LOCKED text); regenerated in the matte style</span></figcaption></figure>
+<figure class="card sm"><a href="full/w5k-aurora-peak-key-art-vinyl.png"><img loading="lazy" src="thumbs/w5k-aurora-peak-key-art-vinyl.jpg" alt="w5k"></a><figcaption>w5k · Aurora Peak Key Art (vinyl pass)<span class="note">style superseded (vinyl STYLE_LOCKED text); regenerated in the matte style</span></figcaption></figure>
+<figure class="card sm"><a href="full/w1k-marshmallow-meadow-key-art-rej1.png"><img loading="lazy" src="thumbs/w1k-marshmallow-meadow-key-art-rej1.jpg" alt="w1k"></a><figcaption>w1k · Marshmallow Meadow Key Art<span class="note">&#x27;START&#x27; lettering on two arches; tiny skaters despite &#x27;no characters&#x27;</span></figcaption></figure>
+<figure class="card sm"><a href="full/w4g-lantern-village-gameplay-rej1.png"><img loading="lazy" src="thumbs/w4g-lantern-village-gameplay-rej1.jpg" alt="w4g"></a><figcaption>w4g · Lantern Village Gameplay<span class="note">pseudo-text on a stall sign and numbers on a menu board</span></figcaption></figure>
+</div>
+</details>
+</section>
+<section id="props"><h2>ของประกอบฉาก <small>Props</small></h2>
+<div class="grid">
+<figure class="card"><a href="full/p1-obstacles.png"><img loading="lazy" src="thumbs/p1-obstacles.jpg" alt="p1"></a><figcaption>p1 · Obstacles</figcaption></figure>
+<figure class="card"><a href="full/p2-gates-items.png"><img loading="lazy" src="thumbs/p2-gates-items.jpg" alt="p2"></a><figcaption>p2 · Gates &amp; Items</figcaption></figure>
+<figure class="card"><a href="full/p3-world-2-props.png"><img loading="lazy" src="thumbs/p3-world-2-props.jpg" alt="p3"></a><figcaption>p3 · World 2 Props</figcaption></figure>
+<figure class="card"><a href="full/p4-world-3-props.png"><img loading="lazy" src="thumbs/p4-world-3-props.jpg" alt="p4"></a><figcaption>p4 · World 3 Props</figcaption></figure>
+<figure class="card"><a href="full/p5-world-4-props.png"><img loading="lazy" src="thumbs/p5-world-4-props.jpg" alt="p5"></a><figcaption>p5 · World 4 Props</figcaption></figure>
+<figure class="card"><a href="full/p6-world-5-props.png"><img loading="lazy" src="thumbs/p6-world-5-props.jpg" alt="p6"></a><figcaption>p6 · World 5 Props</figcaption></figure>
+</div>
+<details class="rej"><summary>Rejected / superseded (5)</summary>
+<div class="grid sm">
+<figure class="card sm"><a href="full/p1-obstacles-vinyl.png"><img loading="lazy" src="thumbs/p1-obstacles-vinyl.jpg" alt="p1"></a><figcaption>p1 · Obstacles (vinyl pass)<span class="note">style superseded (vinyl STYLE_LOCKED text); regenerated in the matte style</span></figcaption></figure>
+<figure class="card sm"><a href="full/p2-gates-items-vinyl.png"><img loading="lazy" src="thumbs/p2-gates-items-vinyl.jpg" alt="p2"></a><figcaption>p2 · Gates &amp; Items (vinyl pass)<span class="note">style superseded (vinyl STYLE_LOCKED text); regenerated in the matte style</span></figcaption></figure>
+<figure class="card sm"><a href="full/p3-world-2-props-vinyl.png"><img loading="lazy" src="thumbs/p3-world-2-props-vinyl.jpg" alt="p3"></a><figcaption>p3 · World 2 Props (vinyl pass)<span class="note">style superseded (vinyl STYLE_LOCKED text); regenerated in the matte style</span></figcaption></figure>
+<figure class="card sm"><a href="full/p4-world-3-props-vinyl.png"><img loading="lazy" src="thumbs/p4-world-3-props-vinyl.jpg" alt="p4"></a><figcaption>p4 · World 3 Props (vinyl pass)<span class="note">style superseded (vinyl STYLE_LOCKED text); regenerated in the matte style</span></figcaption></figure>
+<figure class="card sm"><a href="full/p5-world-4-props-rej1.png"><img loading="lazy" src="thumbs/p5-world-4-props-rej1.jpg" alt="p5"></a><figcaption>p5 · World 4 Props<span class="note">pseudo-text and numbers on the food-stall menu boards</span></figcaption></figure>
+</div>
+</details>
+</section>
+<section id="vfx"><h2>เอฟเฟกต์ <small>VFX</small></h2>
+<div class="grid">
+<figure class="card"><a href="full/v1-snow-motion.png"><img loading="lazy" src="thumbs/v1-snow-motion.jpg" alt="v1"></a><figcaption>v1 · Snow &amp; Motion</figcaption></figure>
+<figure class="card"><a href="full/v2-magic-feedback.png"><img loading="lazy" src="thumbs/v2-magic-feedback.jpg" alt="v2"></a><figcaption>v2 · Magic &amp; Feedback</figcaption></figure>
+</div>
+<details class="rej"><summary>Rejected / superseded (1)</summary>
+<div class="grid sm">
+<figure class="card sm"><a href="full/v2-magic-feedback-rej1.png"><img loading="lazy" src="thumbs/v2-magic-feedback-rej1.jpg" alt="v2"></a><figcaption>v2 · Magic &amp; Feedback<span class="note">text caption under every effect</span></figcaption></figure>
+</div>
+</details>
+</section>
+<section id="title"><h2>หน้าแรกและ UI <small>Title &amp; UI</small></h2>
+<div class="grid">
+<figure class="card"><a href="full/t1-title-key-art.png"><img loading="lazy" src="thumbs/t1-title-key-art.jpg" alt="t1"></a><figcaption>t1 · Title Key Art</figcaption></figure>
+<figure class="card"><a href="full/u1-ui-mood.png"><img loading="lazy" src="thumbs/u1-ui-mood.jpg" alt="u1"></a><figcaption>u1 · UI Mood</figcaption></figure>
+</div>
+</section>
+<section id="music"><h2>เพลง <small>Music</small></h2>
+<div class="tracks">
+<div class="track"><b>m1a · Snow Day! (A) <span class="note">90 s</span></b><audio controls preload="none" src="full/m1a-snow-day-a.mp3"></audio></div>
+<div class="track"><b>m1b · Snow Day! (B) <span class="note">90 s</span></b><audio controls preload="none" src="full/m1b-snow-day-b.mp3"></audio></div>
+<div class="track"><b>m2 · Pine Trail <span class="note">90 s</span></b><audio controls preload="none" src="full/m2-pine-trail.mp3"></audio></div>
+<div class="track"><b>m3 · Crystal Glide <span class="note">90 s</span></b><audio controls preload="none" src="full/m3-crystal-glide.mp3"></audio></div>
+<div class="track"><b>m4 · Lantern Lullaby <span class="note">90 s</span></b><audio controls preload="none" src="full/m4-lantern-lullaby.mp3"></audio></div>
+<div class="track"><b>m5 · Aurora Rush <span class="note">90 s</span></b><audio controls preload="none" src="full/m5-aurora-rush.mp3"></audio></div>
+<div class="track"><b>m6 · Rival Showdown <span class="note">90 s</span></b><audio controls preload="none" src="full/m6-rival-showdown.mp3"></audio></div>
+<div class="track"><b>j1 · Level Clear <span class="note">5 s</span></b><audio controls preload="none" src="full/j1-level-clear.mp3"></audio></div>
+<div class="track"><b>j2 · Star <span class="note">3 s</span></b><audio controls preload="none" src="full/j2-star.mp3"></audio></div>
+<div class="track"><b>j3 · Fall <span class="note">3 s</span></b><audio controls preload="none" src="full/j3-fall.mp3"></audio></div>
+<div class="track"><b>j4 · Question <span class="note">3 s</span></b><audio controls preload="none" src="full/j4-question.mp3"></audio></div>
+</div>
+</section>
+</main>
+</body>
+</html>

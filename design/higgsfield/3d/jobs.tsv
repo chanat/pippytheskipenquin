@@ -1,0 +1,24 @@
+name	job_id	model	credits	face_limit	views
+pip	26ac7539-99fc-40de-8d0d-850fafc007d8	tripo_h3_1_multiview_to_3d	18	12000	front,side,back (detailed texture+geometry)
+benny	adf8293f-b368-4c28-aacd-af7cb074e9e7	tripo_h3_1_multiview_to_3d	9	10000	front,side,back
+tree-a	51d6cc28-3893-4037-9fda-ed5e643a0520	tripo_h3_1_image_to_3d	9	5000	single
+tree-c	7b654fa3-f656-4b6e-b1ac-1c8d81c0af5d	tripo_h3_1_image_to_3d	9	5000	single
+tree-d	6e771b03-52f5-4080-98e7-bbee995b0338	tripo_h3_1_image_to_3d	9	5000	single
+rock-boulder	4ed06f25-a614-447f-95d6-a681174ce6fe	tripo_h3_1_image_to_3d	9	2500	single
+snowman	efb98580-ac76-4144-9625-a08443559e78	tripo_h3_1_image_to_3d	9	3000	single
+log	e6eba379-04d0-4aab-8b83-dd0cae667a7e	tripo_h3_1_image_to_3d	9	2500	single
+coin	ccd3b287-d8d0-430f-8faf-d7322653877d	tripo_h3_1_image_to_3d	9	1000	single (p2)
+shield	d3f9e7a0-ef50-4d44-86c9-4443d5615546	tripo_h3_1_image_to_3d	9	1500	single (p2)
+magnet	99995065-a80e-4548-b27a-4eeb11e29f5a	tripo_h3_1_image_to_3d	9	1500	single (p2)
+crystal	131630b9-5fdb-4337-bc43-9fbb8e105957	tripo_h3_1_image_to_3d	9	1500	single (p2)
+hourglass	15a831d6-a467-417a-957b-5ec6a1a8cb7c	tripo_h3_1_image_to_3d	9	2000	single (p2)
+mushroom	b7052e20-4561-4363-9c4b-cea1b24fcec3	tripo_h3_1_image_to_3d	9	3000	single (p3 W2)
+owl-stump	d501b0c0-0a6c-4a35-b8e3-2b8d9e616ee2	tripo_h3_1_image_to_3d	9	4000	single (p3 W2)
+crystal-cluster	a4a1f390-10b2-406e-b3e5-cedee6163155	tripo_h3_1_image_to_3d	9	3000	single (p4 W3)
+ice-bear	664b0592-1fc7-4a5a-be75-2d2bc83248c2	tripo_h3_1_image_to_3d	9	4000	single (p4 W3)
+house-a	1ba7b12e-75d4-443e-9320-9b161e0f84a8	tripo_h3_1_image_to_3d	9	5000	single (p5 W4)
+mailbox	c2144eb4-7d21-400a-a1f9-d4c91846efa1	tripo_h3_1_image_to_3d	9	2500	single (p5 W4)
+ice-spire	97c1fd05-98f3-4f4d-90d7-656047aaaabb	tripo_h3_1_image_to_3d	9	3000	single (p6 W5)
+tent	3968431d-7338-49cd-b718-98aa541be833	tripo_h3_1_image_to_3d	9	2500	single (p6 W5)
+snow-puff	8f58d1fd-5b29-4ea2-8036-d33fc58f958c	tripo_h3_1_image_to_3d	9	3000	single (e1 concept)
+bear	a15925e0-c653-429a-b25f-76f99c536231	tripo_h3_1_image_to_3d	9	4000	single (e2 concept)

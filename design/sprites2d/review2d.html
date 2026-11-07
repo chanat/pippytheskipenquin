@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pip 2D — Sprite Review</title>
+<style>
+:root{--bg:#F7FBFF;--card:#fff;--ink:#1F2A4D;--mut:#5b6685;--acc:#D6336F;--line:#CDEBFF}
+@media (prefers-color-scheme:dark){:root{--bg:#141a2e;--card:#1e2640;--ink:#eef3ff;--mut:#9aa6c8;--line:#2c3758}}
+body{margin:0;padding:16px;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,"Noto Sans Thai",sans-serif}
+h1{margin:0 0 4px;font-size:24px}
+p.sub{margin:0 0 20px;color:var(--mut)}
+h2{margin:28px 0 10px;font-size:19px;border-bottom:2px solid var(--line);padding-bottom:4px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.card img{display:block;width:100%;height:auto;background:repeating-conic-gradient(#e6ecf5 0 25%,#fff 0 50%) 0 0/16px 16px}
+.cap{padding:8px 10px;display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.cap b{font-weight:600}
+.cap a{color:var(--acc);font-size:13px}
+.note{padding:0 10px 10px;color:var(--mut);font-size:13px}
+details{margin-top:28px}
+summary{cursor:pointer;font-weight:600}
+</style>
+</head>
+<body>
+<h1>Pip 2D — Sprite Review</h1>
+<p class="sub">ชุดสไปรต์ 2D รอบแรก (Nano Banana Pro 2k) · คลิกรูปเพื่อเปิดชีตเต็ม · "cutout" = PNG พื้นใส</p>
+
+<h2>ชุด v5 — สไตล์ toy-3D (probe 3) ทั้ง UI และฉาก (5 พ.ย. บ่าย) · ใช้ในเกม</h2>
+<div class="grid">
+<div class="card"><a href="sheets/u2.png"><img src="thumbs/v5/u2-v5.jpg" alt="u2-v5"></a><div class="cap"><b>u2-v5 · ui-hud-kit</b></div><div class="note">ปุ่มย้อน/พัก หัวใจเต็ม-ว่าง แผ่นไม้เวลา ชิปเหรียญ เหรียญ ธง แถบ progress ว่าง/ทอง ลูกบอลตำแหน่ง Pip/เบนนี่ · 12 ชิ้น</div></div>
+<div class="card"><a href="sheets/u3.png"><img src="thumbs/v5/u3-v5.jpg" alt="u3-v5"></a><div class="cap"><b>u3-v5 · ui-panel-kit</b></div><div class="note">กรอบหน้าต่างน้ำแข็ง ริบบิ้นแดง ดาวทอง/ดาวว่าง ปุ่มน้ำเงิน/เขียว/ขาว ป้ายคะแนนกรมท่า ตราดาวม่วง แท็กฟ้า · 10 ชิ้น</div></div>
+<div class="card"><a href="sheets/u4.png"><img src="thumbs/v5/u4-v5.jpg" alt="u4-v5"></a><div class="cap"><b>u4-v5 · lettering</b></div><div class="note">ตัวอักษร START / FINISH ทองนูน 3 มิติ</div></div>
+<div class="card"><a href="sheets/s04.png"><img src="thumbs/v5/s04-v5.jpg" alt="s04-v5"></a><div class="cap"><b>s04-v5 · obstacles-a</b></div><div class="note">ต้นสน 4 หิน 2 ท่อนไม้ ตุ๊กตาหิมะ · ลำดับเดิม</div></div>
+<div class="card"><a href="sheets/s05.png"><img src="thumbs/v5/s05-v5.jpg" alt="s05-v5"></a><div class="cap"><b>s05-v5 · obstacles-b</b></div><div class="note">ก้อนปุย ก้อนหิมะกลิ้ง เนินปิด เนินหมีโผล่ตา เนินหมีขึ้น หลุมน้ำแข็ง แผ่นน้ำแข็ง แท่นกระโดด · 8 ชิ้นตรงตาราง</div></div>
+<div class="card"><a href="sheets/s06.png"><img src="thumbs/v5/s06-v5.jpg" alt="s06-v5"></a><div class="cap"><b>s06-v5 · items-gates</b></div><div class="note">เหรียญ โล่ แม่เหล็ก คริสตัล นาฬิกาทราย หัวใจ ประตู 4 สี ซุ้ม · 11 ชิ้น</div></div>
+<div class="card"><a href="sheets/b1.png"><img src="thumbs/v5/b1-v5.jpg" alt="b1-v5"></a><div class="cap"><b>b1-v5 · backdrop-w1</b></div><div class="note">ฟ้าน้ำเงิน-ชมพู เมฆฟู ภูเขาหิมะ กระท่อม-ต้นสนบางตา</div></div>
+<div class="card"><a href="sheets/b2.png"><img src="thumbs/v5/b2-v5.jpg" alt="b2-v5"></a><div class="cap"><b>b2-v5 · snow-tile-w1</b></div><div class="note">ปุ่มหิมะนุ่ม ร่องสกีแนวตั้ง ประกาย · ต้องเช็กรอยต่อตอน tile</div></div>
+<div class="card"><a href="sheets/b3.png"><img src="thumbs/v5/b3-v5.jpg" alt="b3-v5"></a><div class="cap"><b>b3-v5 · edge-strip-w1</b></div><div class="note">ตลิ่งหิมะ ต้นสนใหญ่ ตุ๊กตาหิมะ ธงราว พุ่มไม้ ไม่มีสิ่งปลูกสร้าง</div></div>
+<div class="card"><a href="sheets/t2.png"><img src="thumbs/v5/t2-v5.jpg" alt="t2-v5"></a><div class="cap"><b>t2-v5 · title-2d</b></div><div class="note">Pip v4 โบกมือ ธงราว ภูเขา ฟ้าน้ำเงิน-ชมพู เว้นฟ้าบน 40% ให้โลโก้</div></div>
+</div>
+<h2>ภาพทดลองสไตล์ (ผู้ใช้เลือกแบบ 3)</h2>
+<div class="grid">
+<div class="card"><a href="probes-ui/ui-probe-1-sticker.png"><img src="probes-ui/ui-probe-1-sticker-thumb.jpg" alt="ui-probe-1-sticker"></a><div class="cap"><b>probe 1</b></div><div class="note">สติกเกอร์เส้นหนา สีแบน เงาทึบ</div></div>
+<div class="card"><a href="probes-ui/ui-probe-2-gloss.png"><img src="probes-ui/ui-probe-2-gloss-thumb.jpg" alt="ui-probe-2-gloss"></a><div class="cap"><b>probe 2</b></div><div class="note">มันวาว ไล่สี · ซุ้มออกมาบาง</div></div>
+<div class="card"><a href="probes-ui/ui-probe-3-toy3d.png"><img src="probes-ui/ui-probe-3-toy3d-thumb.jpg" alt="ui-probe-3-toy3d"></a><div class="cap"><b>probe 3</b></div><div class="note">กึ่ง 3D พลาสติก/ไม้ขัดมัน · เลือก</div></div>
+<div class="card"><a href="probes-ui/ref-current-hud.png"><img src="probes-ui/ref-current-hud.png" alt="ref"></a><div class="cap"><b>สกรีนช็อตเดิม</b></div><div class="note">HUD วาดด้วยโค้ด ก่อน v5</div></div>
+</div>
+
+<h2>ตัวละคร v4 — Pip เพนกวินดำคลาสสิก ตากลมเล็กสีขาว (5 พ.ย. บ่าย) · ใช้ในเกม</h2>
+<div class="grid">
+<div class="card"><a href="probes-v4/pipv4-C.png"><img src="probes-v4/pipv4-C-thumb.jpg" alt="pipv4-C"></a><div class="cap"><b>pipv4-C · ภาพอ้างอิง (เลือกแล้ว)</b></div><div class="note">element pip-v4 · probe A/B ด้านล่าง</div></div>
+<div class="card"><a href="sheets/s01.png"><img src="thumbs/v4/s01-v4.jpg" alt="s01-v4"></a><div class="cap"><b>s01-v4 · pip-ski-a</b></div><div class="note">ตรง / ตรงย่อเข่า (เฟรม 2 ของ ski-pump) / เลี้ยวซ้าย / เลี้ยวขวา / เร่ง / กระโดด / ตีลังกา · ท่าเร่งออกมาเป็นยืนกางไม้ค้ำ</div></div>
+<div class="card"><a href="sheets/s02.png"><img src="thumbs/v4/s02-v4.jpg" alt="s02-v4"></a><div class="cap"><b>s02-v4 · pip-ski-b</b></div><div class="note">ล้มในก้อนหิมะ / มึน / เฮ / ตกใจ / ภูมิใจ / โบกมือ · ดาวท่ามึนเป็นเกาะแยก</div></div>
+<div class="card"><a href="sheets/s03.png"><img src="thumbs/v4/s03-v4.jpg" alt="s03-v4"></a><div class="cap"><b>s03-v4 · benny</b></div><div class="note">ครบ 4 ท่า ไม่มีเศษ · สไตล์เดียวกับ Pip v4</div></div>
+<div class="card"><a href="sheets/v3-flat/b3.png"><img src="thumbs/v4/b3-v4.jpg" alt="b3-v4"></a><div class="cap"><b>b3-v4 · ขอบลานโลก 1 (ทำใหม่)</b></div><div class="note">ตัดซุ้มโกโก้ออก (ในเกมถูกครอปจนดูเหมือนโต๊ะแดง) เหลือต้นสน ตุ๊กตาหิมะ ธง พุ่มไม้</div></div>
+</div>
+<div class="grid">
+<div class="card"><a href="probes-v4/pipv4-A.png"><img src="probes-v4/pipv4-A-thumb.jpg" alt="pipv4-A"></a><div class="cap"><b>pipv4-A · probe น้ำเงินเข้ม</b></div><div class="note">ไม่ได้เลือก</div></div>
+<div class="card"><a href="probes-v4/pipv4-B.png"><img src="probes-v4/pipv4-B-thumb.jpg" alt="pipv4-B"></a><div class="cap"><b>pipv4-B · probe ฟ้าสด</b></div><div class="note">ไม่ได้เลือก (ดูเป็นนก)</div></div>
+<div class="card"><a href="sheets/s01-v4-rej1.png"><img src="thumbs/v4/s01-v4-rej1.jpg" alt="s01-v4-rej1"></a><div class="cap"><b>s01-v4-rej1</b></div><div class="note">รอบแรก: 2 เฟรมท่าตรงหันคนละมุม → ทำใหม่</div></div>
+</div>
+
+<h2>ตัวละคร v3 (ถูกแทนด้วย v4 ด้านบน)</h2>
+<div class="grid">
+<div class="card"><a href="../higgsfield/full/pip2d-0.png"><img src="../higgsfield/thumbs/pip2d-0.jpg" alt="pip2d-0"></a><div class="cap"><b>pip2d-0 · reference</b></div><div class="note">ภาพอ้างอิงสไตล์ (element pip-2d)</div></div>
+<div class="card"><a href="sheets/v3/s01.png"><img src="thumbs/v3/s01.jpg" alt="s01"></a><div class="cap"><b>s01 · pip-ski-a</b><a href="cutouts/v3/s01.png">cutout</a></div><div class="note">ดี · ละอองหิมะตอนเลี้ยวหายใน cutout</div></div>
+<div class="card"><a href="sheets/v3/s02.png"><img src="thumbs/v3/s02.jpg" alt="s02"></a><div class="cap"><b>s02 · pip-ski-b</b><a href="cutouts/v3/s02.png">cutout</a></div><div class="note">มีหัวกลมเกินมา 1 ชิ้น · กองหิมะท่ามึนหายใน cutout</div></div>
+<div class="card"><a href="sheets/v3/s03.png"><img src="thumbs/v3/s03.jpg" alt="s03"></a><div class="cap"><b>s03 · benny</b><a href="cutouts/v3/s03.png">cutout</a></div><div class="note">ได้ 3 ท่า (ขาดเลี้ยวขวา → mirror) · แถวหัวล่างทิ้ง</div></div>
+</div>
+
+<h2>ของประกอบฉาก</h2>
+<div class="grid">
+<div class="card"><a href="sheets/v3-flat/s04.png"><img src="thumbs/s04.jpg" alt="s04"></a><div class="cap"><b>s04 · obstacles-a</b><a href="cutouts/s04.png">cutout</a></div><div class="note">ดี · หิมะยอดต้นสนโปร่งใสใน cutout</div></div>
+<div class="card"><a href="sheets/v3-flat/s05.png"><img src="thumbs/s05.jpg" alt="s05"></a><div class="cap"><b>s05 · obstacles-b</b><a href="cutouts/s05.png">cutout</a></div><div class="note">ทำใหม่ 1 รอบ · แยกชิ้นชัด</div></div>
+<div class="card"><a href="sheets/v3-flat/s06.png"><img src="thumbs/s06.jpg" alt="s06"></a><div class="cap"><b>s06 · items-gates</b><a href="cutouts/s06.png">cutout</a></div><div class="note">ดี · โล่มีหางเหมือนบอลลูนคำพูด</div></div>
+</div>
+
+<h2>เอฟเฟกต์</h2>
+<div class="grid">
+<div class="card"><a href="sheets/s07.png"><img src="thumbs/s07.jpg" alt="s07"></a><div class="cap"><b>s07 · vfx</b><a href="cutouts/s07.png">cutout</a></div><div class="note">ทำใหม่ 1 รอบ · พื้นดำ ไม่มีเส้นขอบ</div></div>
+</div>
+
+<h2>ฉาก</h2>
+<div class="grid">
+<div class="card"><a href="sheets/v3-flat/b1.png"><img src="thumbs/b1.jpg" alt="b1"></a><div class="cap"><b>b1 · backdrop-w1</b></div><div class="note">ดี</div></div>
+<div class="card"><a href="sheets/v3-flat/b2.png"><img src="thumbs/b2.jpg" alt="b2"></a><div class="cap"><b>b2 · snow-tile-w1</b></div><div class="note">ทำใหม่ 1 รอบ · ปุ่มหิมะชัดไปนิด</div></div>
+<div class="card"><a href="sheets/v3/b3.png"><img src="thumbs/v3/b3.jpg" alt="b3"></a><div class="cap"><b>b3 · edge-strip-w1</b></div><div class="note">มีขอบลาน+ต้นสนโผล่ขวาล่าง · เช็กรอยต่อบน-ล่าง</div></div>
+</div>
+
+<h2>หน้าแรก</h2>
+<div class="grid">
+<div class="card"><a href="sheets/v3-flat/t2.png"><img src="thumbs/t2.jpg" alt="t2"></a><div class="cap"><b>t2 · title-2d</b></div><div class="note">มีหัวเพนกวินจางๆ 3 หัวบนฟ้า ต้องลบมือ</div></div>
+</div>
+
+<details>
+<summary>ภาพที่ตกรอบ (5)</summary>
+<div class="grid" style="margin-top:12px">
+<div class="card"><a href="sheets/s03-rej1.png"><img src="thumbs/s03-rej1.jpg" alt="s03-rej1"></a><div class="cap"><b>s03-rej1 · benny</b></div><div class="note">ขาด 1 ท่า + หัวเกิน 4 หัว · แว่นปิดตา</div></div>
+<div class="card"><a href="sheets/s05-rej1.png"><img src="thumbs/s05-rej1.jpg" alt="s05-rej1"></a><div class="cap"><b>s05-rej1 · obstacles-b</b></div><div class="note">เนินหิมะสองชิ้นติดกัน ตัดแยกไม่ได้</div></div>
+<div class="card"><a href="sheets/s07-rej1.png"><img src="thumbs/s07-rej1.jpg" alt="s07-rej1"></a><div class="cap"><b>s07-rej1 · vfx</b></div><div class="note">พื้นขาว + มีเส้นขอบ</div></div>
+<div class="card"><a href="sheets/b2-rej1.png"><img src="thumbs/b2-rej1.jpg" alt="b2-rej1"></a><div class="cap"><b>b2-rej1 · snow-tile-w1</b></div><div class="note">แถบเบลอขวางด้านล่าง ไม่ seamless</div></div>
+<div class="card"><a href="sheets/t2-rej1.png"><img src="thumbs/t2-rej1.jpg" alt="t2-rej1"></a><div class="cap"><b>t2-rej1 · title-2d</b></div><div class="note">รอบสองยังมีหัวผี + ภูเขาสีลูกกวาด</div></div>
+</div>
+</details>
+</body>
+</html>

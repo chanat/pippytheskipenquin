@@ -1,0 +1,106 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Pip audio render</title>
+<pre id="log">rendering…</pre>
+<script>
+// Each clip gets a fresh OfflineAudioContext and a fresh copy of audio.js (its context is cached
+// inside the module). Music is rendered as [intro][loop][loop]: the second loop pass already
+// carries the reverb tail of the first, so it loops seamlessly; the intro plays once before it.
+const SR = 44100;
+const OFFSET = 0.06; // A.play() starts the first bar 0.06 s in
+const log = (m) => { document.getElementById('log').textContent += '\n' + m; fetch('/log', { method: 'POST', body: m }); };
+
+let SRC = '';
+// Music is scheduled bar by bar like the live game (scheduling everything up front makes the
+// offline graph huge and slow): rendering pauses every second to top up the look-ahead.
+async function render(seconds, drive) {
+  const ctx = new OfflineAudioContext(2, Math.ceil(SR * seconds), SR);
+  window.AudioContext = function () { return ctx; };
+  window.webkitAudioContext = undefined;
+  window.__pump = null;
+  new Function(SRC.replace('S.timer = setTimeout(() => pump(S), 250);', 'S.timer = setTimeout(() => pump(S), 250); window.__pump = () => pump(S);'))();
+  const A = window.PSAudio;
+  A.unlock();
+  drive(A);
+  for (let t = 1; t < seconds; t += 1) ctx.suspend(t).then(() => { if (window.__pump) window.__pump(); ctx.resume(); });
+  return ctx.startRendering();
+}
+
+function slice(buf, t0, t1) {
+  const a = Math.round(t0 * SR), b = Math.min(buf.length, Math.round(t1 * SR));
+  return [buf.getChannelData(0).slice(a, b), buf.getChannelData(1).slice(a, b)];
+}
+
+// Drop trailing near-silence (keeps reverb tails above −66 dB), with a short fade.
+function trim(ch) {
+  let end = ch[0].length;
+  const th = 0.0005;
+  while (end > 1 && Math.abs(ch[0][end - 1]) < th && Math.abs(ch[1][end - 1]) < th) end--;
+  end = Math.min(ch[0].length, end + Math.round(0.03 * SR));
+  const out = ch.map((c) => c.slice(0, end));
+  const f = Math.min(end, Math.round(0.02 * SR));
+  for (const c of out) for (let i = 0; i < f; i++) c[end - 1 - i] *= i / f;
+  return out;
+}
+
+function wav(ch) {
+  const n = ch[0].length;
+  const b = new ArrayBuffer(44 + n * 4);
+  const v = new DataView(b);
+  const s = (o, t) => { for (let i = 0; i < t.length; i++) v.setUint8(o + i, t.charCodeAt(i)); };
+  s(0, 'RIFF'); v.setUint32(4, 36 + n * 4, true); s(8, 'WAVE'); s(12, 'fmt ');
+  v.setUint32(16, 16, true); v.setUint16(20, 1, true); v.setUint16(22, 2, true); v.setUint32(24, SR, true);
+  v.setUint32(28, SR * 4, true); v.setUint16(32, 4, true); v.setUint16(34, 16, true); s(36, 'data'); v.setUint32(40, n * 4, true);
+  let o = 44, peak = 0;
+  for (let i = 0; i < n; i++) for (const c of ch) {
+    const x = Math.max(-1, Math.min(1, c[i]));
+    peak = Math.max(peak, Math.abs(x));
+    v.setInt16(o, x < 0 ? x * 0x8000 : x * 0x7fff, true); o += 2;
+  }
+  return { blob: new Blob([b], { type: 'audio/wav' }), peak };
+}
+
+async function save(name, ch) {
+  const { blob, peak } = wav(ch);
+  await fetch('/save?name=' + name, { method: 'POST', body: blob });
+  log(name + ': ' + (ch[0].length / SR).toFixed(2) + ' s, peak ' + peak.toFixed(3));
+}
+
+// Track timing must match TRACKS in audio.js: bars of 16 sixteenth-steps.
+const MUSIC = [
+  { id: 'battle', bpm: 176, bars: 16, intro: 2, tempo: 1, name: 'battle' },
+  { id: 'battle', bpm: 176, bars: 16, intro: 2, tempo: 1.05, name: 'battle_fast' },
+  { id: 'rival', bpm: 170, bars: 8, intro: 0, tempo: 1, name: 'rival' },
+  { id: 'snow', bpm: 150, bars: 8, intro: 0, tempo: 1, name: 'snow' },
+  { id: 'clear', bpm: 160, bars: 2, tempo: 1, oneShot: true, name: 'clear' },
+  { id: 'fail', bpm: 140, bars: 2, tempo: 1, oneShot: true, name: 'fail' },
+];
+const SFX = ['coin', 'right', 'wrong', 'jump', 'flip', 'land', 'crash', 'power', 'shield', 'star', 'tick', 'pop', 'smash'];
+
+(async () => {
+  SRC = await (await fetch('/audio.js')).text();
+  // ?only=clear,fail,sfx re-renders just those clips.
+  const only = new URLSearchParams(location.search).get('only');
+  const want = (n) => !only || only.split(',').includes(n);
+  for (const m of MUSIC) {
+    if (!want(m.name)) continue;
+    const bar = 60 / (m.bpm * m.tempo) / 4 * 16;
+    if (m.oneShot) {
+      const len = OFFSET + m.bars * bar + 3;
+      const buf = await render(len, (A) => A.play(m.id, m.tempo));
+      await save('music_' + m.name, trim(slice(buf, OFFSET, len)));
+      continue;
+    }
+    const intro = m.intro * bar, loop = m.bars * bar;
+    const len = OFFSET + intro + 2 * loop + 0.2;
+    const buf = await render(len, (A) => A.play(m.id, m.tempo));
+    if (m.intro) await save('music_' + m.name + '_intro', slice(buf, OFFSET, OFFSET + intro));
+    await save('music_' + m.name + '_loop', slice(buf, OFFSET + intro + loop, OFFSET + intro + 2 * loop));
+  }
+  for (const id of want('sfx') ? SFX : []) {
+    const buf = await render(3.2, (A) => A.sfx(id));
+    await save('sfx_' + id, trim(slice(buf, 0, 3.2)));
+  }
+  log('done');
+})().catch((e) => log('ERROR ' + e.stack));
+</script>
