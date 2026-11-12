@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pippy icon preview</title>
+<style>
+:root{--bg:#10162b;--fg:#eef3ff;--mute:#9fb0d6;--card:#1a2342}
+@media (prefers-color-scheme: light){:root{--bg:#eef3fb;--fg:#17203d;--mute:#5b6a8f;--card:#fff}}
+body{margin:0;padding:24px 16px;background:var(--bg);color:var(--fg);font:15px/1.5 -apple-system,"Sukhumvit Set",Thonburi,sans-serif}
+h1{font-size:20px;margin:0 0 4px}p{margin:0 0 20px;color:var(--mute)}
+.row{background:var(--card);border-radius:16px;padding:16px;margin:0 0 16px}
+.row h2{font-size:16px;margin:0 0 12px}.row h2 span{color:var(--mute);font-weight:400}
+.icons{display:flex;flex-wrap:wrap;gap:18px;align-items:flex-end}
+.i{text-align:center;font-size:11px;color:var(--mute)}
+.i img{display:block;margin:0 auto 6px;box-shadow:0 2px 8px rgba(0,0,0,.35)}
+.ios img{border-radius:22.4%}.and img{border-radius:50%}
+.wall{background:linear-gradient(160deg,#4f6bd8,#b06ad1 55%,#f0a37c);border-radius:12px;padding:14px}
+</style></head><body>
+<h1>ไอคอนแอพ Pippy The Ski Penguin</h1>
+<p>แต่ละแบบแสดงเป็นขอบมนแบบ iOS และวงกลมแบบ Android ที่ขนาด 180 / 120 / 80 / 60 / 40 px · แบบ D คือแบบที่ติดตั้งในโปรเจ็ค</p>
+<script>
+const items=[["D · ขัดเงา (ติดตั้งแล้ว)","probes/icon-D-polished.png"],["A · สติกเกอร์แบน","probes/icon-A-hero.png"],["B · เรนเดอร์ 3D","probes/icon-B-downhill.png"],["C · วงน้ำแข็ง","probes/icon-C-ice.png"]];
+const sizes=[180,120,80,60,40];
+for(const [name,src] of items){
+  const row=document.createElement('div');row.className='row';
+  row.innerHTML=`<h2>${name} <span>${src}</span></h2><div class="wall"><div class="icons">`+
+    sizes.map(s=>`<div class="i ios"><img src="${src}" width="${s}" height="${s}" alt="">iOS ${s}</div>`).join('')+
+    sizes.slice(1,4).map(s=>`<div class="i and"><img src="${src}" width="${s}" height="${s}" alt="">Android ${s}</div>`).join('')+
+    `</div></div>`;
+  document.body.appendChild(row);
+}
+</script>
+</body></html>

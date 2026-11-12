@@ -14,6 +14,15 @@ namespace Pip.EditorTools
     {
         const string ScenePath = "Assets/Scenes/Game.unity";
 
+        /// <summary>Full product name (Xcode product / .app file name, window title, save path).</summary>
+        public const string ProductName = "Pippy The Ski Penguin";
+
+        /// <summary>The name under the app icon: iOS CFBundleDisplayName (<see cref="HomeScreenNameIOS"/> patches the exported
+        /// Info.plist) and the Android launcher label (<c>AndroidAppName</c> rewrites app_name in the Gradle project).
+        /// Not set through Player Settings: in Unity 6 <c>PlayerSettings.iOS.applicationDisplayName</c> is an alias of
+        /// <c>productName</c>, which would also rename the Xcode product / .app.</summary>
+        public const string HomeScreenName = "Pippy";
+
         [MenuItem("Pip/Setup Project")]
         public static void Run()
         {
@@ -62,7 +71,7 @@ namespace Pip.EditorTools
             EditorSceneManager.SaveScene(scene, ScenePath);
             EditorBuildSettings.scenes = new[] { new EditorBuildSettingsScene(ScenePath, true) };
 
-            PlayerSettings.productName = "Pippy The Ski Penguin";
+            PlayerSettings.productName = ProductName; // the short home-screen name is applied at build time (HomeScreenName)
             PlayerSettings.SetApplicationIdentifier(NamedBuildTarget.iOS, "com.everyimagine.pippy");
             PlayerSettings.SetApplicationIdentifier(NamedBuildTarget.Android, "com.everyimagine.pippy");
             PlayerSettings.SetApplicationIdentifier(NamedBuildTarget.Standalone, "com.everyimagine.pippy");

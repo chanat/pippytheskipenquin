@@ -4,6 +4,7 @@
   "references": [
     "Pip.Core",
     "Pip.Game",
+    "Pip.Editor",
     "UnityEngine.TestRunner",
     "UnityEditor.TestRunner"
   ],
